@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import Fade from "react-reveal/Slide";
 import { Link } from "react-router-dom";
-
+import "../../../css/app.css";
 export default class Login extends Component {
     constructor(props) {
         super(props);
@@ -14,10 +14,7 @@ export default class Login extends Component {
         };
     }
 
-    async componentDidMount() {
-        const res = await axios.get("/user");
-        console.log(res.data.status);
-    }
+
 
     handlerInput = (e) => {
         this.setState({ [e.target.name]: e.target.value });
@@ -28,7 +25,7 @@ export default class Login extends Component {
         const data = this.state;
         const res = await axios.post("/user/login", data);
         if (res.data.status === 200) {
-            this.props.history.push("/panel");
+            this.props.history.push("/");
         } else {
             this.setState({ error: true });
         }
@@ -38,14 +35,7 @@ export default class Login extends Component {
         const rememberMe = this.state.rememberMe;
         this.setState({ rememberMe: !rememberMe });
     };
-    logout = async () => {
-        const res = await axios.post("/user/logout",'');
-        if (res.data.status === 200) {
-            console.log("Dorost");
-        } else {
-            console.log("Ghalat");
-        }
-    };
+ 
 
     render() {
         return (
@@ -105,11 +95,7 @@ export default class Login extends Component {
                                 <a className="underlineHover" href="#">
                                     Forgot Password?
                                 </a>
-                                <input
-                                    type="button"
-                                    value="logout"
-                                    onClick={() => this.logout()}
-                                />
+                           
 
                                 <div id="formFooter">
                                     <Link to="/register">Register?</Link>

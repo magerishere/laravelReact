@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Fade from "react-reveal/Fade";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "../../../css/app.css";
+
 export default class Register extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +27,7 @@ export default class Register extends Component {
 
             if (res.data.status === 200) {
                 console.log("dorost");
-                this.props.history.push("/");
+                this.props.history.push("/login");
             }
         } else {
             this.setState({ message: "Confirm does not match!" });
@@ -83,7 +85,7 @@ export default class Register extends Component {
                                     />
                                 </form>
                                 <div id="formFooter">
-                                    <Link to="/">Login?</Link>
+                                    <Link to="/login">Login?</Link>
                                 </div>
                             </div>
                         </div>
