@@ -2083,6 +2083,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -2101,6 +2103,33 @@ var Panel = /*#__PURE__*/function (_Component) {
     _classCallCheck(this, Panel);
 
     _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "logout", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().post("/user/logout", "");
+
+            case 2:
+              res = _context.sent;
+
+              if (res.data.status === 200) {
+                window.location.replace("http://laravel.local/");
+              } else {
+                console.log("Ghalat");
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    })));
+
     _this.state = {
       products: [],
       email: ""
@@ -2111,17 +2140,17 @@ var Panel = /*#__PURE__*/function (_Component) {
   _createClass(Panel, [{
     key: "componentDidMount",
     value: function () {
-      var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var res, email, response, products;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _context.next = 2;
+                _context2.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/user");
 
               case 2:
-                res = _context.sent;
+                res = _context2.sent;
 
                 if (res.data.status === 200) {
                   email = res.data.user.email;
@@ -2130,11 +2159,11 @@ var Panel = /*#__PURE__*/function (_Component) {
                   });
                 }
 
-                _context.next = 6;
+                _context2.next = 6;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/product");
 
               case 6:
-                response = _context.sent;
+                response = _context2.sent;
 
                 if (response.data.status === 200) {
                   products = response.data.products;
@@ -2146,10 +2175,10 @@ var Panel = /*#__PURE__*/function (_Component) {
 
               case 8:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function componentDidMount() {
@@ -2161,6 +2190,8 @@ var Panel = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "panel-wrapper",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -2330,6 +2361,9 @@ var Panel = /*#__PURE__*/function (_Component) {
                         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                           className: "dropdown-item",
                           href: "#",
+                          onClick: function onClick() {
+                            return _this2.logout();
+                          },
                           children: "Log out"
                         })]
                       })]

@@ -20,6 +20,15 @@ export default class Panel extends Component {
             console.log(products);
         }
     }
+    logout = async () => {
+        const res = await axios.post("/user/logout", "");
+        if (res.data.status === 200) {
+
+            window.location.replace("http://laravel.local/");
+        } else {
+            console.log("Ghalat");
+        }
+    };
     render() {
         return (
             <div className="panel-wrapper">
@@ -189,6 +198,9 @@ export default class Panel extends Component {
                                                 <a
                                                     className="dropdown-item"
                                                     href="#"
+                                                    onClick={() =>
+                                                        this.logout()
+                                                    }
                                                 >
                                                     Log out
                                                 </a>

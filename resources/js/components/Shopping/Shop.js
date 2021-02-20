@@ -18,6 +18,7 @@ class Shop extends React.Component {
             size: "",
             sort: "",
             auth: false,
+            message: "",
         };
     }
     filterProducts = (event) => {
@@ -119,7 +120,10 @@ class Shop extends React.Component {
             });
             console.log(res.data.products);
             if (res.data.status === 200) {
-                console.log("anjam shod");
+                this.setState({
+                    message: "Your order successfuly submit!",
+                });
+                localStorage.clear();
             } else {
                 console.log("ghalat");
             }
@@ -129,30 +133,22 @@ class Shop extends React.Component {
         // console.log(orders.order.length);
     };
 
-    logout = async () => {
-        const res = await axios.post("/user/logout", "");
-        if (res.data.status === 200) {
-            window.location.reload(false);
-        } else {
-            console.log("Ghalat");
-        }
-    };
     render() {
         return (
             <div className="grid-container">
                 <header>
-                    <a href="/">فروشگاه الهه</a>
+                    <a href="/">فروشگاه لینک ما</a>
                     <div className="toolbar">
                         {this.state.auth ? (
                             <div>
-                                <a href="#" onClick={() => this.logout()}>
-                                    Logout
-                                </a>
-
                                 <a href="/dashboard">Dashboard</a>
                             </div>
                         ) : (
-                            <Link to="/register">Register</Link>
+                            <div>
+                                <Link to="/login">Login</Link>
+                                {" / "}
+                                <Link to="/register">Register</Link>
+                            </div>
                         )}
                     </div>
                 </header>
@@ -177,6 +173,7 @@ class Shop extends React.Component {
                                 removeFromCart={this.removeFromCart}
                                 createOrder={this.createOrder}
                                 auth={this.state.auth}
+                                message={this.state.message}
                             />
                         </div>
                     </div>

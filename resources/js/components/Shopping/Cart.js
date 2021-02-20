@@ -43,60 +43,69 @@ export default class Cart extends Component {
                 <div className="cart">
                     <Fade left cascade>
                         <ul className="cart-items">
-                            {cartItems.map((item) => (
-                                <li key={item._id}>
-                                    <div>
-                                        <img
-                                            src={item.image}
-                                            alt={item.title}
-                                        ></img>
-                                    </div>
-                                    <div>
-                                        <div>{item.title}</div>
-                                        <div className="right">
-                                            {formatCurrency(item.price)} x{" "}
-                                            {item.count}{" "}
-                                            <button
-                                                className="button"
-                                                onClick={() =>
-                                                    this.props.removeFromCart(
-                                                        item
-                                                    )
-                                                }
-                                            >
-                                                Remove
-                                            </button>
+                            {this.props.message !== "" && (
+                                <p>
+                                    <strong>{this.props.message}</strong>
+                                    <a href="/dashboard">Check Here!</a>
+                                </p>
+                            )}
+                            {this.props.message === "" &&
+                                cartItems.map((item) => (
+                                    <li key={item._id}>
+                                        <div>
+                                            <img
+                                                src={item.image}
+                                                alt={item.title}
+                                            ></img>
                                         </div>
-                                    </div>
-                                </li>
-                            ))}
+                                        <div>
+                                            <div>{item.title}</div>
+                                            <div className="right">
+                                                {formatCurrency(item.price)} x{" "}
+                                                {item.count}{" "}
+                                                <button
+                                                    className="button"
+                                                    onClick={() =>
+                                                        this.props.removeFromCart(
+                                                            item
+                                                        )
+                                                    }
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                ))}
                         </ul>
                     </Fade>
                 </div>
                 {cartItems.length !== 0 && (
                     <div>
-                        <div className="cart">
-                            <div className="total">
-                                <div>
-                                    Total:{" "}
-                                    {formatCurrency(
-                                        cartItems.reduce(
-                                            (a, c) => a + c.price * c.count,
-                                            0
-                                        )
-                                    )}
+                        {this.props.message === "" && (
+                            <div className="cart">
+                                <div className="total">
+                                    <div>
+                                        Total:{" "}
+                                        {formatCurrency(
+                                            cartItems.reduce(
+                                                (a, c) => a + c.price * c.count,
+                                                0
+                                            )
+                                        )}
+                                    </div>
                                 </div>
+                                <button
+                                    onClick={() => {
+                                        this.setState({ showCheckout: true });
+                                    }}
+                                    className="button primary"
+                                >
+                                    Procced
+                                </button>
                             </div>
-                            <button
-                                onClick={() => {
-                                    this.setState({ showCheckout: true });
-                                }}
-                                className="button primary"
-                            >
-                                Procced
-                            </button>
-                        </div>
-                        {this.state.showCheckout && (
+                        )}
+                        {this.props.message === "" && this.state.showCheckout && (
                             <Fade right cascade>
                                 <div className="cart">
                                     <form onSubmit={this.createOrder}>
