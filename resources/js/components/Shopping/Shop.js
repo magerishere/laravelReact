@@ -129,9 +129,13 @@ class Shop extends React.Component {
                     <a href="/">فروشگاه الهه</a>
                     <div className="toolbar">
                         {this.state.auth ? (
-                            <a href="#" onClick={() => this.logout()}>
-                                Logout
-                            </a>
+                            <div>
+                                <a href="#" onClick={() => this.logout()}>
+                                    Logout
+                                </a>
+
+                                <a href="/dashboard">Dashboard</a>
+                            </div>
                         ) : (
                             <Link to="/register">Register</Link>
                         )}

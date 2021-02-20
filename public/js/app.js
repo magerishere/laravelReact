@@ -2059,10 +2059,6 @@ var Example = function Example() {
         path: "/register",
         exact: true,
         component: _Forms_Register__WEBPACK_IMPORTED_MODULE_4__.default
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
-        path: "/panel",
-        exact: true,
-        component: _Shopping_Shop__WEBPACK_IMPORTED_MODULE_5__.default
       })]
     })
   });
@@ -3274,12 +3270,17 @@ var Shop = /*#__PURE__*/function (_React$Component) {
             children: "\u0641\u0631\u0648\u0634\u06AF\u0627\u0647 \u0627\u0644\u0647\u0647"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
             className: "toolbar",
-            children: this.state.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
-              href: "#",
-              onClick: function onClick() {
-                return _this2.logout();
-              },
-              children: "Logout"
+            children: this.state.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
+                href: "#",
+                onClick: function onClick() {
+                  return _this2.logout();
+                },
+                children: "Logout"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
+                href: "/dashboard",
+                children: "Dashboard"
+              })]
             }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Link, {
               to: "/register",
               children: "Register"

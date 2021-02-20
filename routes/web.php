@@ -21,3 +21,6 @@ Route::get('/', function () {
 Route::resource('/user',UserController::class);
 Route::post('/user/login',[UserController::class,'login']);
 Route::post('/user/logout',[UserController::class,'logout']);
+Route::get('/dashboard',function(){
+    return view('dashboard');
+});
