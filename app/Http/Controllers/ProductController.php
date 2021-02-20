@@ -16,6 +16,9 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $user = Auth::user();
+        $products = $user->product()->get();
+        return response()->json(['status'=>200,'products'=>$products]);
     }
 
     /**

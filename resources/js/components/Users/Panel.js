@@ -1,17 +1,23 @@
 import React, { Component } from "react";
 import "../../../css/panel.css";
 import axios from "axios";
-
+import formatCurrency from "../../formatCurrency";
 export default class Panel extends Component {
     constructor(props) {
         super(props);
-        this.state = { email: "" };
+        this.state = { products: [], email: "" };
     }
     async componentDidMount() {
         const res = await axios.get("/user");
         if (res.data.status === 200) {
             const email = res.data.user.email;
             this.setState({ email: email });
+        }
+        const response = await axios.get("/product");
+        if (response.data.status === 200) {
+            const products = response.data.products;
+            this.setState({ products: products });
+            console.log(products);
         }
     }
     render() {
@@ -273,42 +279,41 @@ export default class Panel extends Component {
                                                     <thead className="text-success">
                                                         <th>ID</th>
                                                         <th>Name</th>
-                                                        <th>Salary</th>
-                                                        <th>Country</th>
+                                                        <th>Count</th>
+                                                        <th>Price</th>
+                                                        <th>Total</th>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Dakota Rice</td>
-                                                            <td>$36,738</td>
-                                                            <td>Niger</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>
-                                                                Minerva Hooper
-                                                            </td>
-                                                            <td>$23,789</td>
-                                                            <td>Curaçao</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>3</td>
-                                                            <td>
-                                                                Sage Rodriguez
-                                                            </td>
-                                                            <td>$56,142</td>
-                                                            <td>Netherlands</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>4</td>
-                                                            <td>
-                                                                Philip Chaney
-                                                            </td>
-                                                            <td>$38,735</td>
-                                                            <td>
-                                                                Korea, South
-                                                            </td>
-                                                        </tr>
+                                                        {this.state.products.map(
+                                                            (product) => (
+                                                                <tr>
+                                                                    <td>
+                                                                        {
+                                                                            product.id
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        {
+                                                                            product.name
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        {
+                                                                            product.count
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        {formatCurrency(
+                                                                            product.price
+                                                                        )}
+                                                                    </td>
+                                                                    <td>
+                                                                        {product.count *
+                                                                            product.price}
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        )}
                                                     </tbody>
                                                 </table>
                                             </div>
