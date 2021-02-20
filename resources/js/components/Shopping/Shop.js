@@ -5,6 +5,7 @@ import Products from "./Products";
 import data from "../../data.json";
 import "../../../css/shop.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class Shop extends React.Component {
     constructor() {
@@ -68,7 +69,6 @@ class Shop extends React.Component {
         } else {
             this.setState({ auth: false });
         }
-        console.log(res.data.status);
     }
 
     sortProducts = (event) => {
@@ -110,8 +110,23 @@ class Shop extends React.Component {
         this.setState({ sort: sort, products: products });
     };
 
-    createOrder = (order) => {
-        alert("Need To save order for " + order.name);
+    createOrder = async (orders) => {
+        console.log(orders.order);
+
+        if (this.state.auth) {
+            const res = await axios.post("/product", {
+                products: orders.order,
+            });
+            console.log(res.data.products);
+            if (res.data.status === 200) {
+                console.log("anjam shod");
+            } else {
+                console.log("ghalat");
+            }
+        } else {
+            alert("need to save " + orders.name);
+        }
+        // console.log(orders.order.length);
     };
 
     logout = async () => {

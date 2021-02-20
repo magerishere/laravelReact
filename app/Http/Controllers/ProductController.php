@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 
-
-class UserController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,13 +16,6 @@ class UserController extends Controller
     public function index()
     {
         //
-        if(Auth::check()) {
-            $userId = Auth::id();
-            $user = User::find($userId)->first();
-
-            return response()->json(['status'=>200,"user"=>$user]);
-        }
-        return response()->json(['status'=>400]);
     }
 
     /**
@@ -45,19 +37,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        // $this->validate($request,[
-        //     'password'=>'required|confirmed',
-        // ]);
-        $user = User::create([
-            'email'=>$request->email,
-            'password'=>bcrypt($request->password),
-        ]);
-        // if($user){
-        //     return redirect('/');
+        $userId = Auth::id();
+        $data = $request->products;
+        for($i=0;$i < count($data);$i++) {
+            $product = Product::create([
+                'user_id'=>$userId,
+                'name'=>$data[$i]['title'],
+                'count'=>$data[$i]['count'],
+                'size'=>'M',
+                'price'=>$data[$i]['price'],
+            ]);
+        }
 
-        // }
-       
-            return response()->json(['status'=>200]);
+        
+        return response()->json(['status'=>200]);
     }
 
     /**
@@ -103,34 +96,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function login(Request $request) 
-    {
-        $email = $request->email;
-        $password = $request->password;
-     
-        if(Auth::attempt(['email'=>$email,'password'=>$password],$request->rememberMe)) 
-        {
-            $request->session()->regenerate();
-            return response()->json(['status'=>200]);
-        } 
-
-        return response()->json(['status'=>400]);
-    }
-
-    public function logout(Request $request) 
-    {
-        if(Auth::check()) 
-        {
-           
-            Auth::logout();
-            $request->session()->invalidate();
-
-            $request->session()->regenerateToken();
-            return response()->json(['status'=>200]);
-
-        }
-        return response()->json(['status'=>400]);
     }
 }

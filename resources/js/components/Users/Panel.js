@@ -1,7 +1,19 @@
 import React, { Component } from "react";
-import "../../../../public/css/panel.css";
+import "../../../css/panel.css";
+import axios from "axios";
 
 export default class Panel extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { email: "" };
+    }
+    async componentDidMount() {
+        const res = await axios.get("/user");
+        if (res.data.status === 200) {
+            const email = res.data.user.email;
+            this.setState({ email: email });
+        }
+    }
     render() {
         return (
             <div className="panel-wrapper">
@@ -13,18 +25,20 @@ export default class Panel extends Component {
                         data-image="../assets/img/sidebar-1.jpg"
                     >
                         <div className="logo">
-                            <a
-                                href="http://www.creative-tim.com"
-                                className="simple-text logo-normal"
-                            >
-                                Creative Tim
+                            <a href="/" className="simple-text logo-normal">
+                                Home
                             </a>
                         </div>
                         <div className="sidebar-wrapper">
                             <ul className="nav">
                                 <li className="nav-item active  ">
-                                    <a className="nav-link" href="./dashboard.html">
-                                        <i className="material-icons">dashboard</i>
+                                    <a
+                                        className="nav-link"
+                                        href="./dashboard.html"
+                                    >
+                                        <i className="material-icons">
+                                            dashboard
+                                        </i>
                                         <p>Dashboard</p>
                                     </a>
                                 </li>
@@ -35,7 +49,10 @@ export default class Panel extends Component {
                                     </a>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link" href="./tables.html">
+                                    <a
+                                        className="nav-link"
+                                        href="./tables.html"
+                                    >
                                         <i className="material-icons">
                                             content_paste
                                         </i>
@@ -49,8 +66,11 @@ export default class Panel extends Component {
                         <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                             <div className="container-fluid">
                                 <div className="navbar-wrapper">
-                                    <a className="navbar-brand" href="javascript:;">
-                                        Dashboard
+                                    <a
+                                        className="navbar-brand"
+                                        href="javascript:;"
+                                    >
+                                        Welcome {this.state.email}
                                     </a>
                                 </div>
                                 <button
@@ -314,7 +334,8 @@ export default class Panel extends Component {
                                         document.write(new Date().getFullYear())
                                     </script>
                                     , made with{" "}
-                                    <i className="material-icons">favorite</i> by
+                                    <i className="material-icons">favorite</i>{" "}
+                                    by
                                     <a
                                         href="https://www.creative-tim.com"
                                         target="_blank"

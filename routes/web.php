@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,7 @@ Route::get('/', function () {
 Route::resource('/user',UserController::class);
 Route::post('/user/login',[UserController::class,'login']);
 Route::post('/user/logout',[UserController::class,'logout']);
+Route::resource('/product',ProductController::class);
 Route::get('/dashboard',function(){
     return view('dashboard');
 });

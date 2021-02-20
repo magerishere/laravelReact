@@ -16,4 +16,5 @@ mix.js("resources/js/app.js", "public/js")
     .sass("resources/sass/app.scss", "public/css");
 
 mix.js('resources/js/back.js',"public/js/back.js")
-    .react();
+    .react()
+    .sass("resources/assets/scss/material-dashboard.scss","public/js/panel.css");

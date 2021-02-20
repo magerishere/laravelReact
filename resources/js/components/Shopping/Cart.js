@@ -9,7 +9,6 @@ export default class Cart extends Component {
             name: "",
             email: "",
             address: "",
-
             showCheckout: false,
         };
     }
@@ -20,13 +19,14 @@ export default class Cart extends Component {
 
     createOrder = (e) => {
         e.preventDefault();
-        const order = {
+        const orders = {
             name: this.state.name,
             email: this.state.email,
             address: this.state.address,
             order: this.props.cartItems,
         };
-        this.props.createOrder(order);
+
+        this.props.createOrder(orders);
     };
     render() {
         const { cartItems } = this.props;
@@ -102,17 +102,6 @@ export default class Cart extends Component {
                                     <form onSubmit={this.createOrder}>
                                         {this.props.auth ? (
                                             <ul className="form-container">
-                                                <li>
-                                                    <label>Address</label>
-                                                    <input
-                                                        name="address"
-                                                        type="text"
-                                                        onChange={
-                                                            this.handlerInput
-                                                        }
-                                                        required
-                                                    />
-                                                </li>
                                                 <li>
                                                     <button
                                                         className="button primary"
