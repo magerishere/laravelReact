@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import formatCurrency from "../../formatCurrency";
 
 export default class Dashboard extends Component {
+  
+  
     render() {
         return (
             <div>

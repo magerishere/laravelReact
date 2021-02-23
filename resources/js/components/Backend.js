@@ -16,6 +16,7 @@ class Backend extends React.Component {
             email: "",
             userMeta: {},
             total: 0,
+            addClassActive: true,
         };
     }
 
@@ -25,12 +26,12 @@ class Backend extends React.Component {
             const userId = res.data.user.id;
             const email = res.data.user.email;
             const userMeta = res.data.userMeta;
-            console.log(userMeta);
+            console.log(res.data.user);
+            console.log(userId);
             this.setState({
                 userId: userId,
                 email: email,
                 userMeta: userMeta,
-                dashboard: true,
             });
         }
         const response = await axios.get("/product");
@@ -41,10 +42,15 @@ class Backend extends React.Component {
 
             let { total } = this.state;
             this.state.products.forEach((product) =>
-                this.setState({ total: (total += product.price) })
+                this.setState({
+                    total: (total += product.price * product.count),
+                })
             );
         }
     }
+    addClassActive = (value) => {
+        this.setState({ addClassActive: value });
+    };
 
     logout = async () => {
         const res = await axios.post("/user/logout", "");
@@ -72,8 +78,17 @@ class Backend extends React.Component {
                             </div>
                             <div className="sidebar-wrapper">
                                 <ul className="nav">
-                                    <li className="nav-item active">
+                                    <li
+                                        className={`nav-item ${
+                                            this.state.addClassActive === true
+                                                ? " active"
+                                                : ""
+                                        }`}
+                                    >
                                         <Link
+                                            onClick={() =>
+                                                this.addClassActive(true)
+                                            }
                                             className="nav-link"
                                             to="/dashboard"
                                         >
@@ -83,8 +98,17 @@ class Backend extends React.Component {
                                             <p>Dashboard</p>
                                         </Link>
                                     </li>
-                                    <li className="nav-item ">
+                                    <li
+                                        className={`nav-item ${
+                                            this.state.addClassActive === false
+                                                ? " active"
+                                                : ""
+                                        }`}
+                                    >
                                         <Link
+                                            onClick={() =>
+                                                this.addClassActive(false)
+                                            }
                                             className="nav-link"
                                             to="/profile"
                                         >
@@ -241,6 +265,7 @@ class Backend extends React.Component {
                                     </div>
                                 </div>
                             </nav>
+
                             <div className="content">
                                 {/* content */}
 

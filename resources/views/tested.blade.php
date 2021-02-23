@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-        <form method="POST" action="/ajab">
+        <form method="POST" action="/ajab" >
         @csrf
         <input type="submit" value="Send">
         </form>

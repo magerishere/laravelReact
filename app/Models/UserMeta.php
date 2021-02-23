@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class UserMeta extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','fname','lname','adress','city','country','postalCode','about'];
+    protected $fillable = ['user_id','fname','lname','adress','city','country','postalCode','about','image'];
 }

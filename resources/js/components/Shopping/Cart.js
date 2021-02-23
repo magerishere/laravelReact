@@ -41,7 +41,7 @@ export default class Cart extends Component {
                 )}
 
                 <div className="cart">
-                    <Fade left cascade>
+                    <Fade right cascade>
                         <ul className="cart-items">
                             {this.props.message !== "" && (
                                 <p>

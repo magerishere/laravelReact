@@ -23,6 +23,7 @@ class CreateUserMetasTable extends Migration
             $table->string('country',20)->nullable();
             $table->integer('postalCode')->nullable();
             $table->text('about')->nullable();
+            $table->text('image')->nullable();
             $table->timestamps();
         });
     }

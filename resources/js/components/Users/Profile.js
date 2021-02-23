@@ -1,26 +1,49 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Fade from "react-reveal/Fade";
 
 export default class Profile extends Component {
     constructor(props) {
         super(props);
-        this.state = this.props.userMeta;
+        this.state = { user: this.props.userMeta, message: "" };
     }
 
     handlerInput = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
+        // this.setState({ [e.target.name]: e.target.value });
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState((state) => ({
+            user: {
+                ...state.user,
+                [name]: value,
+            },
+        }));
     };
 
     formSubmit = async (e) => {
         e.preventDefault();
 
-        const res = await axios.patch(`/user/${this.props.userId}`, this.state);
+        const res = await axios.patch(
+            `/user/${this.props.userId}`,
+            this.state.user
+        );
         if (res.data.status === 200) {
-            console.log("dorost");
+            this.setState({ message: "Successful Update" });
         } else {
             console.log("ghalat");
         }
     };
+    handlerImage = (e) => {
+        const value = e.target.value.match(/[^\\/]*$/)[0];
+        const name = e.target.name;
+        this.setState((state) => ({
+            user: {
+                ...state.user,
+                [name]: value,
+            },
+        }));
+    };
+
     render() {
         return (
             <div className="container-fluid">
@@ -28,7 +51,14 @@ export default class Profile extends Component {
                     <div className="col-md-8">
                         <div className="card">
                             <div className="card-header card-header-primary">
-                                <h4 className="card-title">Edit Profile</h4>
+                                <h4 className="card-title">
+                                    Edit Profile
+                                    <input
+                                        type="file"
+                                        name="image"
+                                        onChange={this.handlerImage}
+                                    />
+                                </h4>
                                 <p className="card-category">
                                     Complete your profile
                                 </p>
@@ -48,7 +78,7 @@ export default class Profile extends Component {
                                                 />
                                             </div>
                                         </div>
-                                   
+
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label className="bmd-label-floating">
@@ -58,7 +88,6 @@ export default class Profile extends Component {
                                                     type="email"
                                                     className="form-control"
                                                     value={this.props.email}
-
                                                     disabled
                                                 />
                                             </div>
@@ -76,8 +105,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state
-                                                            ? this.state.fname
+                                                        this.state.user
+                                                            ? this.state.user
+                                                                  .fname
                                                             : ""
                                                     }
                                                 />
@@ -94,8 +124,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state
-                                                            ? this.state.lname
+                                                        this.state.user
+                                                            ? this.state.user
+                                                                  .lname
                                                             : ""
                                                     }
                                                 />
@@ -114,8 +145,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state
-                                                            ? this.state.adress
+                                                        this.state.user
+                                                            ? this.state.user
+                                                                  .adress
                                                             : ""
                                                     }
                                                 />
@@ -134,8 +166,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state
-                                                            ? this.state.city
+                                                        this.state.user
+                                                            ? this.state.user
+                                                                  .city
                                                             : ""
                                                     }
                                                 />
@@ -152,8 +185,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state
-                                                            ? this.state.country
+                                                        this.state.user
+                                                            ? this.state.user
+                                                                  .country
                                                             : ""
                                                     }
                                                 />
@@ -170,8 +204,8 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state
-                                                            ? this.state
+                                                        this.state.user
+                                                            ? this.state.user
                                                                   .postalCode
                                                             : ""
                                                     }
@@ -193,8 +227,9 @@ export default class Profile extends Component {
                                                             this.handlerInput
                                                         }
                                                         value={
-                                                            this.state
+                                                            this.state.user
                                                                 ? this.state
+                                                                      .user
                                                                       .about
                                                                 : ""
                                                         }
@@ -211,7 +246,11 @@ export default class Profile extends Component {
                                     </button>
                                     {/* <input type="submit" value="Edit" /> */}
 
-                                    <div className="clearfix"></div>
+                                    <div className="clearfix">
+                                        <Fade left when={this.state.message}>
+                                            <p>{this.state.message}</p>
+                                        </Fade>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -219,23 +258,26 @@ export default class Profile extends Component {
                     <div className="col-md-4">
                         <div className="card card-profile">
                             <div className="card-avatar">
-                                <a href="javascript:;">
+                                <a href="#">
                                     <img
                                         className="img"
                                         src="/images/avatar.png"
                                     />
                                 </a>
                             </div>
+
                             <div className="card-body">
                                 <h6 className="card-category text-gray">
-                                    CEO / Co-Founder
+                                    {this.props.email}
                                 </h6>
-                                <h4 className="card-title">Alec Thompson</h4>
+                                <h4 className="card-title">
+                                    {this.state.user &&
+                                        this.state.user.fname +
+                                            " " +
+                                            this.state.user.lname}
+                                </h4>
                                 <p className="card-description">
-                                    Don't be scared of the truth because we need
-                                    to restart the human foundation in truth And
-                                    I love you like Kanye loves Kanye I love
-                                    Rick Owens’ bed design but the back is...
+                                    {this.state.user && this.state.user.about}
                                 </p>
                                 <a
                                     href="javascript:;"

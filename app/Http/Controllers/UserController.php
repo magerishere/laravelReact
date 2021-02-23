@@ -20,7 +20,7 @@ class UserController extends Controller
         //
         if(Auth::check()) {
             $userId = Auth::id();
-            $user = User::find($userId)->first();
+            $user = User::where(['id'=>$userId])->first();
             $userMeta = UserMeta::where(['user_id'=>$userId])->first();
             return response()->json(['status'=>200,"user"=>$user,'userMeta'=>$userMeta]);
         }
@@ -94,7 +94,11 @@ class UserController extends Controller
     {
         //
       
-        
+        if($file = file($request->image)) {
+            $name = time() . $file;
+            $file.move('/images/',$name);
+
+        }
         if($user = UserMeta::where(['user_id'=>$id])->first()) {
            $result = $user->update([
                 'fname'=>$request->fname,
@@ -104,6 +108,7 @@ class UserController extends Controller
                 'country'=>$request->country,
                 'postalCode'=>$request->postalCode,
                 'about'=>$request->about,
+                'image'=>$name,
             ]);
         } else {
            $result = UserMeta::create([
@@ -115,6 +120,7 @@ class UserController extends Controller
                 'country'=>$request->country,
                 'postalCode'=>$request->postalCode,
                 'about'=>$request->about,
+                'image'=>$name
             ]);
         }
         if($result) {

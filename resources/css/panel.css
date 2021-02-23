@@ -5193,6 +5193,15 @@ button.bg-dark:hover {
     display: block;
     clear: both;
     content: "";
+   
+}
+
+.clearfix p {
+    max-width: 200px;
+    text-align: center;
+    background-color: green;
+    color: white;
+    font-size: 20px;
 }
 .d-none {
     display: none !important;
