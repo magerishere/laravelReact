@@ -7,8 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-        <form method="POST" action="/ajab" >
+        <form method="POST" action="/tested" enctype="multipart/form-data" >
         @csrf
+        <input type="file" name="image" >
         <input type="submit" value="Send">
         </form>
 </body>

@@ -5,7 +5,7 @@ import Fade from "react-reveal/Fade";
 export default class Profile extends Component {
     constructor(props) {
         super(props);
-        this.state = { user: this.props.userMeta, message: "" };
+        this.state = { user: this.props.userMeta, message: "", photo: "" };
     }
 
     handlerInput = (e) => {
@@ -34,7 +34,7 @@ export default class Profile extends Component {
         }
     };
     handlerImage = (e) => {
-        const value = e.target.value.match(/[^\\/]*$/)[0];
+        const value = e.target.files[0];
         const name = e.target.name;
         this.setState((state) => ({
             user: {
@@ -44,6 +44,14 @@ export default class Profile extends Component {
         }));
     };
 
+    handlerPhoto = (e) => {
+        // this.setState({ [e.target.name]: e.target.files[0] });
+        let form = new FormData();
+        form.append("image", e.target.files[0], e.target.files[0].name);
+
+        const res = axios.post("/user/image", form);
+    };
+
     render() {
         return (
             <div className="container-fluid">
@@ -51,14 +59,7 @@ export default class Profile extends Component {
                     <div className="col-md-8">
                         <div className="card">
                             <div className="card-header card-header-primary">
-                                <h4 className="card-title">
-                                    Edit Profile
-                                    <input
-                                        type="file"
-                                        name="image"
-                                        onChange={this.handlerImage}
-                                    />
-                                </h4>
+                                <h4 className="card-title">Edit Profile</h4>
                                 <p className="card-category">
                                     Complete your profile
                                 </p>
@@ -244,7 +245,6 @@ export default class Profile extends Component {
                                     >
                                         Update Profile
                                     </button>
-                                    {/* <input type="submit" value="Edit" /> */}
 
                                     <div className="clearfix">
                                         <Fade left when={this.state.message}>
@@ -285,6 +285,12 @@ export default class Profile extends Component {
                                 >
                                     Follow
                                 </a>
+
+                                <input
+                                    type="file"
+                                    name="photo"
+                                    onChange={this.handlerPhoto}
+                                />
                             </div>
                         </div>
                     </div>

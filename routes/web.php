@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Models\User;
 use App\Models\UserMeta;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,8 @@ Route::resource('/user',UserController::class);
 Route::post('/user/login',[UserController::class,'login']);
 Route::post('/user/logout',[UserController::class,'logout']);
 Route::resource('/product',ProductController::class);
+Route::post('/user/image',[UserController::class,'image']);
+Route::post('/user/setting',[UserController::class,'setting']);
 Route::get('/dashboard',function(){
     return view('dashboard');
 });
@@ -34,13 +38,13 @@ Route::get('/tested',function(){
     return view('tested');
 });
 
-Route::post('/ajab',function(){
-    // $userId = Auth::id();
-    $userMetaCheck = UserMeta::where(['user_id'=>1])->first();
-    if($userMetaCheck) {
-        // $userMeta = $userMetaCheck
-        return $userMetaCheck;
-    } else {
-        return 'nothing';
+Route::post('/tested',function(Request $request){
+    if($file = $request->file('image')) {
+        $name = time() . $file->getClientOriginalName();
+     
+        $file->move(public_path('/images/'),$name);
+        return $file->getClientOriginalExtension();
+     
+        // return response()->json(['status'=>200]);
     }
 });

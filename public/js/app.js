@@ -2507,7 +2507,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _formatCurrency__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../formatCurrency */ "./resources/js/formatCurrency.js");
 /* harmony import */ var react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-reveal/Fade */ "./node_modules/react-reveal/Fade.js");
 /* harmony import */ var react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-modal */ "./node_modules/react-modal/lib/index.js");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_reveal_Zoom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-reveal/Zoom */ "./node_modules/react-reveal/Zoom.js");
+/* harmony import */ var react_reveal_Zoom__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_reveal_Zoom__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2538,6 +2542,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
 var Cart = /*#__PURE__*/function (_Component) {
   _inherits(Cart, _Component);
 
@@ -2554,8 +2560,7 @@ var Cart = /*#__PURE__*/function (_Component) {
       _this.setState(_defineProperty({}, e.target.name, e.target.value));
     });
 
-    _defineProperty(_assertThisInitialized(_this), "createOrder", function (e) {
-      e.preventDefault();
+    _defineProperty(_assertThisInitialized(_this), "createOrder", function () {
       var orders = {
         name: _this.state.name,
         email: _this.state.email,
@@ -2564,13 +2569,24 @@ var Cart = /*#__PURE__*/function (_Component) {
       };
 
       _this.props.createOrder(orders);
+
+      _this.closeModel();
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "closeModel", function () {
+      _this.setState({
+        finishBuy: false
+      });
     });
 
     _this.state = {
       name: "",
       email: "",
       address: "",
-      showCheckout: false
+      showCheckout: false,
+      finishBuy: false,
+      total: 0,
+      discount: 0
     };
     return _this;
   }
@@ -2581,40 +2597,230 @@ var Cart = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var cartItems = this.props.cartItems;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        children: [cartItems.length === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        children: [this.state.finishBuy && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_modal__WEBPACK_IMPORTED_MODULE_3___default()), {
+          isOpen: true,
+          onRequestClose: this.closeModel,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Zoom__WEBPACK_IMPORTED_MODULE_4___default()), {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+              "class": "finishBuy offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                "class": "card",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                  "class": "card-header p-4",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                    type: "button",
+                    onClick: this.closeModel,
+                    children: "x"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                    "class": "pt-2 d-inline-block",
+                    href: "http://example.local/",
+                    "data-abc": "true",
+                    children: "example.com"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                    "class": "float-right",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h3", {
+                      "class": "mb-0",
+                      children: "Invoice #BBB10234"
+                    }), "Date: 12 Jun,2019"]
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                  "class": "card-body",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                    "class": "row mb-4",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      "class": "col-sm-6",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                        "class": "mb-3",
+                        children: "From:"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h3", {
+                        "class": "text-dark mb-1",
+                        children: "\u0641\u0631\u0648\u0634\u06AF\u0627\u0647 \u0627\u0644\u0647\u0647"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: " \u0627\u0633\u0644\u0627\u0645\u0634\u0647\u0631 \u062E\u06CC\u0627\u0628\u0627\u0646 \u0634\u06CC\u0631\u0627\u0632\u06CC"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: "\u0641\u0631\u0645\u0627\u0646\u062F\u0627\u0631\u06CC \u062F\u0627\u0646\u0634\u06AF\u0627\u0647 \u0627\u0633\u0644\u0627\u0645\u0634\u0647\u0631"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: "Email: elahe@elahe.com"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: "Phone: +91 9897 989 989"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      "class": "col-sm-6 ",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                        "class": "mb-3",
+                        children: "To:"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h3", {
+                        "class": "text-dark mb-1",
+                        children: this.props.userMeta.fname
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                        children: [this.props.userMeta.country, " ", " ", " ", this.props.userMeta.city, " "]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: this.props.userMeta.adress
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                        children: ["Email: ", this.props.user.email]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: "Phone: +91 9895 398 009"
+                      })]
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                    "class": "table-responsive-sm",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("table", {
+                      "class": "table table-striped",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("thead", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tr", {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                            "class": "center",
+                            children: "#"
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                            children: "Item"
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                            children: "Description"
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                            "class": "right",
+                            children: "Price"
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                            "class": "center",
+                            children: "Qty"
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                            "class": "right",
+                            children: "Total"
+                          })]
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("tbody", {
+                        children: cartItems.map(function (cartItem) {
+                          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tr", {
+                            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "center",
+                              children: cartItem._id
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "left strong",
+                              children: cartItem.title
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("td", {
+                              "class": "left",
+                              children: [cartItem.description.substring(0, 30), "..."]
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "right",
+                              children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(cartItem.price)
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "center",
+                              children: cartItem.count
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "right",
+                              children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(cartItem.price * cartItem.count)
+                            })]
+                          });
+                        })
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                    "class": "row",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                      "class": "col-lg-4 col-sm-5"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                      "class": "col-lg-4 col-sm-5 ml-auto",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("table", {
+                        "class": "table table-clear",
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tbody", {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tr", {
+                            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "left",
+                              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("strong", {
+                                "class": "text-dark",
+                                children: "Subtotal"
+                              })
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "right",
+                              children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(cartItems.reduce(function (a, c) {
+                                return a + c.price * c.count;
+                              }, 0))
+                            })]
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tr", {
+                            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "left",
+                              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("strong", {
+                                "class": "text-dark",
+                                children: "Discount (10%)"
+                              })
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "right",
+                              children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(cartItems.reduce(function (a, c) {
+                                return a + c.price * c.count;
+                              }, 0) * 0.1)
+                            })]
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tr", {
+                            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("td", {
+                              "class": "left",
+                              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("strong", {
+                                "class": "text-dark",
+                                children: "Total"
+                              }), " "]
+                            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                              "class": "right",
+                              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("strong", {
+                                "class": "text-dark",
+                                children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(cartItems.reduce(function (a, c) {
+                                  return a + c.price * c.count;
+                                }, 0) - cartItems.reduce(function (a, c) {
+                                  return a + c.price * c.count;
+                                }, 0) * 0.1)
+                              })
+                            })]
+                          })]
+                        })
+                      })
+                    })]
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                  "class": "card-footer bg-white",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                    "class": "mb-0",
+                    children: "we will save your bill product in your account"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                    type: "submit",
+                    value: "Finish",
+                    className: "button primary",
+                    onClick: function onClick() {
+                      return _this2.createOrder();
+                    }
+                  })]
+                })]
+              })
+            })
+          })
+        }), cartItems.length === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "cart cart-header",
           children: "Cart is empty"
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
           className: "cart cart-header",
           children: ["You have ", cartItems.length, " in cart"]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "cart",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
             right: true,
             cascade: true,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("ul", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("ul", {
               className: "cart-items",
-              children: [this.props.message !== "" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("strong", {
+              children: [this.props.message !== "" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("strong", {
                   children: this.props.message
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                   href: "/dashboard",
                   children: "Check Here!"
                 })]
               }), this.props.message === "" && cartItems.map(function (item) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("li", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
                       src: item.image,
                       alt: item.title
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                       children: item.title
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                       className: "right",
-                      children: [(0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(item.price), " x", " ", item.count, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      children: [(0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(item.price), " x", " ", item.count, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
                         className: "button",
                         onClick: function onClick() {
                           return _this2.props.removeFromCart(item);
@@ -2627,17 +2833,17 @@ var Cart = /*#__PURE__*/function (_Component) {
               })]
             })
           })
-        }), cartItems.length !== 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          children: [this.props.message === "" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), cartItems.length !== 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          children: [this.props.message === "" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
             className: "cart",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "total",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                 children: ["Total:", " ", (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(cartItems.reduce(function (a, c) {
                   return a + c.price * c.count;
                 }, 0))]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
               onClick: function onClick() {
                 _this2.setState({
                   showCheckout: true
@@ -2646,53 +2852,58 @@ var Cart = /*#__PURE__*/function (_Component) {
               className: "button primary",
               children: "Procced"
             })]
-          }), this.props.message === "" && this.state.showCheckout && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
+          }), this.props.message === "" && this.state.showCheckout && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
             right: true,
             cascade: true,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "cart",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("form", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("form", {
                 onSubmit: this.createOrder,
-                children: this.props.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("ul", {
+                children: this.props.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("ul", {
                   className: "form-container",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
                       className: "button primary",
-                      type: "submit",
+                      type: "button",
+                      onClick: function onClick() {
+                        return _this2.setState({
+                          finishBuy: true
+                        });
+                      },
                       children: "Checkout"
                     })
                   })
-                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("ul", {
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("ul", {
                   className: "form-container",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("li", {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
                       children: "Email"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
                       name: "email",
                       type: "email",
                       onChange: this.handlerInput,
                       required: true
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("li", {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
                       children: "Name"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
                       name: "name",
                       type: "text",
                       onChange: this.handlerInput,
                       required: true
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("li", {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
                       children: "Address"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
                       name: "address",
                       type: "text",
                       onChange: this.handlerInput,
                       required: true
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
                       className: "button primary",
                       type: "submit",
                       children: "Checkout"
@@ -3131,6 +3342,8 @@ var Shop = /*#__PURE__*/function (_React$Component) {
           item.count++;
           alreadyInCart = true;
         }
+
+        console.log(cartItems);
       });
 
       if (!alreadyInCart) {
@@ -3179,24 +3392,26 @@ var Shop = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "createOrder", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(orders) {
-        var res;
+        var size, res;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 console.log(orders.order);
+                size = _this.state.size;
 
                 if (!_this.state.auth) {
-                  _context.next = 9;
+                  _context.next = 10;
                   break;
                 }
 
-                _context.next = 4;
+                _context.next = 5;
                 return axios__WEBPACK_IMPORTED_MODULE_7___default().post("/product", {
-                  products: orders.order
+                  products: orders.order,
+                  size: size
                 });
 
-              case 4:
+              case 5:
                 res = _context.sent;
                 console.log(res.data.products);
 
@@ -3210,13 +3425,13 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                   console.log("ghalat");
                 }
 
-                _context.next = 10;
+                _context.next = 11;
                 break;
 
-              case 9:
+              case 10:
                 alert("need to save " + orders.name);
 
-              case 10:
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -3232,9 +3447,10 @@ var Shop = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       products: _data_json__WEBPACK_IMPORTED_MODULE_5__.products,
       cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
-      size: "",
       sort: "",
       auth: false,
+      user: {},
+      userMeta: {},
       message: ""
     };
     return _this;
@@ -3257,7 +3473,9 @@ var Shop = /*#__PURE__*/function (_React$Component) {
 
                 if (res.data.status === 200) {
                   this.setState({
-                    auth: true
+                    auth: true,
+                    user: res.data.user,
+                    userMeta: res.data.userMeta
                   });
                 } else {
                   this.setState({
@@ -3327,7 +3545,9 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                 removeFromCart: this.removeFromCart,
                 createOrder: this.createOrder,
                 auth: this.state.auth,
-                message: this.state.message
+                message: this.state.message,
+                user: this.state.user,
+                userMeta: this.state.userMeta
               })
             })]
           })
@@ -7869,7 +8089,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Montserrat&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "html {\n    font-size: 62.5%;\n    box-sizing: border-box;\n}\nbody,\n#root {\n    height: 100vh;\n    margin: 0;\n}\nbody,\ninput,\nselect,\nbutton,\ntextarea {\n    font-family: Montserrat, Helvetica, Arial, sans-serif;\n    font-size: 1.6rem;\n}\n\n.grid-container {\n    display: grid;\n    grid-template-areas:\n        \"header\"\n        \"main\"\n        \"footer\";\n    grid-template-rows: 5rem 1fr 5rem;\n    grid-template-columns: 1fr;\n    height: 100%;\n}\na {\n    text-decoration: none;\n}\na:hover {\n    color: #ff8000;\n}\nheader {\n    grid-area: header;\n    background-color: #203040;\n    color: #ffffff;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.5rem;\n}\nheader a {\n    color: #ffffff;\n    text-decoration: none;\n}\nmain {\n    grid-area: main;\n}\nfooter {\n    grid-area: footer;\n    position: fixed;\n    width: 100%;\n    bottom: 0;\n    background-color: #203040;\n    color: #ffffff;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n.content {\n    display: flex;\n    flex-wrap: wrap;\n}\n.main {\n    flex: 3 60rem;\n}\n.sidebar {\n    flex: 1 20rem;\n}\n\n/* products */\n.products {\n    display: flex;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 0;\n    margin: 0;\n    list-style-type: none;\n}\n.products li {\n    flex: 0 1 29rem;\n    height: 47rem;\n    padding: 1rem;\n}\n.product {\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    height: 100%;\n}\n.product img {\n    max-width: 37rem;\n    max-height: 37rem;\n}\n.product-price {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n}\n.product-price div,\n.product-price button {\n    text-align: center;\n    flex: 1;\n}\n.product-price div {\n    font-size: 2rem;\n}\n.button {\n    padding: 1rem;\n    border: 0.1rem #c0c0c0 solid;\n    background-color: #f0f0f0;\n    cursor: pointer;\n}\n.button:hover {\n    border: 0.1rem #808080 solid;\n}\n.button.primary {\n    background-color: #f0c040;\n}\n/* Filter */\n.filter {\n    display: flex;\n    justify-content: space-between;\n    padding: 1rem;\n    margin: 1rem;\n    border-bottom: 0.1rem #c0c0c0 solid;\n}\n.filter div {\n    flex: 1;\n}\n/* Index.css */\n.cart {\n    padding: 1rem;\n    margin: 1rem;\n    display: flex;\n}\n.cart-header {\n    border-bottom: 0.1rem #c0c0c0 solid;\n}\n.cart-items {\n    padding: 0;\n    width: 100%;\n    list-style-type: none;\n}\n.cart-items img {\n    width: 5rem;\n}\n.cart-items li {\n    display: flex;\n}\n.cart-items li div {\n    padding: 0.5rem;\n}\n.cart-items li div:last-child {\n    flex: 1;\n}\n.cart-items p {\n    background-color: green;\n    color: white;\n    padding: 16px;\n}\n\n.cart-items a {\n    text-decoration: none;\n    color: blue;\n    font-size: 32px;\n}\n.right {\n    text-align: right;\n}\n.total {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n}\n.total > div {\n    font-size: 2rem;\n}\n.total > div,\n.total > button {\n    flex: 1;\n}\n/* Checkout form */\nform {\n    width: 100%;\n}\n.form-container {\n    width: 100%;\n    padding: 0;\n    list-style-type: none;\n}\n.form-container li {\n    display: flex;\n    flex-direction: column;\n    padding: 1rem;\n}\ninput {\n    padding: 1rem;\n    border: 0.1rem #c0c0c0 solid;\n}\n/* Product Details */\n.product-details {\n    display: flex;\n    flex-wrap: wrap;\n    justify-content: space-between;\n    max-height: 96vh;\n}\n.product-details img {\n    max-height: 100vh;\n    max-width: 46rem;\n    margin: 0 auto;\n}\n.product-details-description {\n    flex: 1 1;\n    margin: 1rem;\n}\n.close-modal {\n    position: absolute;\n    right: 1rem;\n    top: 2.5rem;\n    z-index: 1000;\n}\n\n/* Order Details */\n\n.order-details {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n}\n.order-details li {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n}\n.order-details li div {\n    padding: 10px;\n}\n.order-details .items {\n    text-align: right;\n    padding: 0;\n}\n.success-message {\n    color: green;\n}\n/* Orders */\n.orders {\n    width: 100%;\n    padding: 10px;\n}\ntbody > tr:nth-child(odd) {\n    background-color: #f0f0f0;\n}\ntd {\n    padding: 5px;\n}\nth {\n    text-align: left;\n}\n\nheader {\n    display: flex;\n    text-align: center;\n    justify-content: space-between;\n    align-items: center;\n    font-size: 32px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "html {\n    font-size: 62.5%;\n    box-sizing: border-box;\n}\nbody,\n#root {\n    height: 100vh;\n    margin: 0;\n}\nbody,\ninput,\nselect,\nbutton,\ntextarea {\n    font-family: Montserrat, Helvetica, Arial, sans-serif;\n    font-size: 1.6rem;\n}\n\n.grid-container {\n    display: grid;\n    grid-template-areas:\n        \"header\"\n        \"main\"\n        \"footer\";\n    grid-template-rows: 5rem 1fr 5rem;\n    grid-template-columns: 1fr;\n    height: 100%;\n}\na {\n    text-decoration: none;\n}\na:hover {\n    color: #ff8000;\n}\nheader {\n    grid-area: header;\n    background-color: #203040;\n    color: #ffffff;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.5rem;\n}\nheader a {\n    color: #ffffff;\n    text-decoration: none;\n}\nmain {\n    grid-area: main;\n}\nfooter {\n    grid-area: footer;\n    position: fixed;\n    width: 100%;\n    bottom: 0;\n    background-color: #203040;\n    color: #ffffff;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n.content {\n    display: flex;\n    flex-wrap: wrap;\n}\n.main {\n    flex: 3 60rem;\n}\n.sidebar {\n    flex: 1 20rem;\n}\n\n/* products */\n.products {\n    display: flex;\n    flex-wrap: wrap;\n    justify-content: center;\n    align-items: center;\n    padding: 0;\n    margin: 0;\n    list-style-type: none;\n}\n.products li {\n    flex: 0 1 29rem;\n    height: 47rem;\n    padding: 1rem;\n}\n.product {\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    height: 100%;\n}\n.product img {\n    max-width: 37rem;\n    max-height: 37rem;\n}\n.product-price {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n}\n.product-price div,\n.product-price button {\n    text-align: center;\n    flex: 1;\n}\n.product-price div {\n    font-size: 2rem;\n}\n.button {\n    padding: 1rem;\n    border: 0.1rem #c0c0c0 solid;\n    background-color: #f0f0f0;\n    cursor: pointer;\n}\n.button:hover {\n    border: 0.1rem #808080 solid;\n}\n.button.primary {\n    background-color: #f0c040;\n}\n/* Filter */\n.filter {\n    display: flex;\n    justify-content: space-between;\n    padding: 1rem;\n    margin: 1rem;\n    border-bottom: 0.1rem #c0c0c0 solid;\n}\n.filter div {\n    flex: 1;\n}\n/* Index.css */\n.cart {\n    padding: 1rem;\n    margin: 1rem;\n    display: flex;\n}\n.cart-header {\n    border-bottom: 0.1rem #c0c0c0 solid;\n}\n.cart-items {\n    padding: 0;\n    width: 100%;\n    list-style-type: none;\n}\n.cart-items img {\n    width: 5rem;\n}\n.cart-items li {\n    display: flex;\n}\n.cart-items li div {\n    padding: 0.5rem;\n}\n.cart-items li div:last-child {\n    flex: 1;\n}\n.cart-items p {\n    background-color: green;\n    color: white;\n    padding: 16px;\n}\n\n.cart-items a {\n    text-decoration: none;\n    color: blue;\n    font-size: 32px;\n}\n.right {\n    text-align: right;\n}\n.total {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n}\n.total > div {\n    font-size: 2rem;\n}\n.total > div,\n.total > button {\n    flex: 1;\n}\n/* Checkout form */\nform {\n    width: 100%;\n}\n.form-container {\n    width: 100%;\n    padding: 0;\n    list-style-type: none;\n}\n.form-container li {\n    display: flex;\n    flex-direction: column;\n    padding: 1rem;\n}\ninput {\n    padding: 1rem;\n    border: 0.1rem #c0c0c0 solid;\n}\n/* Product Details */\n.product-details {\n    display: flex;\n    flex-wrap: wrap;\n    justify-content: space-between;\n    max-height: 96vh;\n}\n.product-details img {\n    max-height: 100vh;\n    max-width: 46rem;\n    margin: 0 auto;\n}\n.product-details-description {\n    flex: 1 1;\n    margin: 1rem;\n}\n.close-modal {\n    position: absolute;\n    right: 1rem;\n    top: 2.5rem;\n    z-index: 1000;\n}\n\n/* Order Details */\n\n.order-details {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n}\n.order-details li {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n}\n.order-details li div {\n    padding: 10px;\n}\n.order-details .items {\n    text-align: right;\n    padding: 0;\n}\n.success-message {\n    color: green;\n}\n/* Orders */\n.orders {\n    width: 100%;\n    padding: 10px;\n}\ntbody > tr:nth-child(odd) {\n    background-color: #f0f0f0;\n}\ntd {\n    padding: 5px;\n}\nth {\n    text-align: left;\n}\n\nheader {\n    display: flex;\n    text-align: center;\n    justify-content: space-between;\n    align-items: center;\n    font-size: 32px;\n}\n\n.card-footer p {\n    color: blue;\n}\n.card-footer input {\n   width: 300px;\n   float: right;\n\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

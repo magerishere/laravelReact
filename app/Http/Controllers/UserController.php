@@ -93,12 +93,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-      
-        if($file = file($request->image)) {
-            $name = time() . $file;
-            $file.move('/images/',$name);
-
-        }
+       
+     
         if($user = UserMeta::where(['user_id'=>$id])->first()) {
            $result = $user->update([
                 'fname'=>$request->fname,
@@ -108,7 +104,7 @@ class UserController extends Controller
                 'country'=>$request->country,
                 'postalCode'=>$request->postalCode,
                 'about'=>$request->about,
-                'image'=>$name,
+             
             ]);
         } else {
            $result = UserMeta::create([
@@ -120,7 +116,7 @@ class UserController extends Controller
                 'country'=>$request->country,
                 'postalCode'=>$request->postalCode,
                 'about'=>$request->about,
-                'image'=>$name
+           
             ]);
         }
         if($result) {
@@ -169,5 +165,41 @@ class UserController extends Controller
 
         }
         return response()->json(['status'=>400]);
+    }
+
+    public function image(Request $request)
+    {
+      
+            $file = $request->file('image');
+        
+            
+            $name = time() . $file->getClientOriginalName();
+            
+            $file->move(public_path('/images/',$name));
+        
+            
+            $userId = Auth::id();
+            $userMeta = UserMeta::where(['user_id'=>$userId])->first();
+            $userMeta->update([
+                'image'=>$name,
+            ]);
+            return response()->json(['status'=>200,'image'=>$request->file('image')]);
+        
+    }
+
+    public function setting(Request $request)
+    {
+        $userId = Auth::id();
+        $user = User::where(['id'=>$userId])->first();
+        if(Auth::attempt(['email'=>$user->email,'password'=>$request->currentPassword])) 
+        {
+            $user->update([
+                'password'=>bcrypt($request->newPassword),
+            ]);
+            return response()->json(['status'=>200]);
+
+        }
+        return response()->json(['status'=>400]);
+
     }
 }

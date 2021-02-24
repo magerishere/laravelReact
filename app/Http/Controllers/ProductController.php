@@ -47,7 +47,6 @@ class ProductController extends Controller
                 'user_id'=>$userId,
                 'name'=>$data[$i]['title'],
                 'count'=>$data[$i]['count'],
-                'size'=>'M',
                 'price'=>$data[$i]['price'],
             ]);
         }

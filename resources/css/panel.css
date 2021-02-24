@@ -16151,3 +16151,10 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
         display: none !important;
     }
 }
+
+
+.modalShow {
+    color: red;
+    background-color: black;
+  
+}

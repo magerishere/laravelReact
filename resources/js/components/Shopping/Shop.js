@@ -7,7 +7,6 @@ import "../../../css/shop.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
 class Shop extends React.Component {
     constructor() {
         super();
@@ -16,9 +15,10 @@ class Shop extends React.Component {
             cartItems: localStorage.getItem("cartItems")
                 ? JSON.parse(localStorage.getItem("cartItems"))
                 : [],
-            size: "",
             sort: "",
             auth: false,
+            user: {},
+            userMeta: {},
             message: "",
         };
     }
@@ -56,6 +56,7 @@ class Shop extends React.Component {
                 item.count++;
                 alreadyInCart = true;
             }
+            console.log(cartItems);
         });
         if (!alreadyInCart) {
             cartItems.push({ ...product, count: 1 });
@@ -67,7 +68,11 @@ class Shop extends React.Component {
     async componentDidMount() {
         const res = await axios.get("/user");
         if (res.data.status === 200) {
-            this.setState({ auth: true });
+            this.setState({
+                auth: true,
+                user: res.data.user,
+                userMeta: res.data.userMeta,
+            });
         } else {
             this.setState({ auth: false });
         }
@@ -114,10 +119,11 @@ class Shop extends React.Component {
 
     createOrder = async (orders) => {
         console.log(orders.order);
-
+        const size = this.state.size;
         if (this.state.auth) {
             const res = await axios.post("/product", {
                 products: orders.order,
+                size: size,
             });
             console.log(res.data.products);
             if (res.data.status === 200) {
@@ -136,51 +142,53 @@ class Shop extends React.Component {
 
     render() {
         return (
-                <div className="grid-container">
-                    <header>
-                        <a href="/">فروشگاه الهه</a>
-                        <div className="toolbar">
-                            {this.state.auth ? (
-                                <div>
-                                    <a href="/dashboard">Dashboard</a>
-                                </div>
-                            ) : (
-                                <div>
-                                    <Link to="/login">Login</Link>
-                                    {" / "}
-                                    <Link to="/register">Register</Link>
-                                </div>
-                            )}
-                        </div>
-                    </header>
-                    <main>
-                        <div className="content">
-                            <div className="main">
-                                <Filter
-                                    count={this.state.products.length}
-                                    sort={this.state.sort}
-                                    size={this.state.size}
-                                    filterProducts={this.filterProducts}
-                                    sortProducts={this.sortProducts}
-                                />
-                                <Products
-                                    products={this.state.products}
-                                    addToCart={this.addToCart}
-                                ></Products>
+            <div className="grid-container">
+                <header>
+                    <a href="/">فروشگاه الهه</a>
+                    <div className="toolbar">
+                        {this.state.auth ? (
+                            <div>
+                                <a href="/dashboard">Dashboard</a>
                             </div>
-                            <div className="sidebar">
-                                <Cart
-                                    cartItems={this.state.cartItems}
-                                    removeFromCart={this.removeFromCart}
-                                    createOrder={this.createOrder}
-                                    auth={this.state.auth}
-                                    message={this.state.message}
-                                />
+                        ) : (
+                            <div>
+                                <Link to="/login">Login</Link>
+                                {" / "}
+                                <Link to="/register">Register</Link>
                             </div>
+                        )}
+                    </div>
+                </header>
+                <main>
+                    <div className="content">
+                        <div className="main">
+                            <Filter
+                                count={this.state.products.length}
+                                sort={this.state.sort}
+                                size={this.state.size}
+                                filterProducts={this.filterProducts}
+                                sortProducts={this.sortProducts}
+                            />
+                            <Products
+                                products={this.state.products}
+                                addToCart={this.addToCart}
+                            ></Products>
                         </div>
-                    </main>
-                    <footer>All right is reserved.</footer>
-                </div>
+                        <div className="sidebar">
+                            <Cart
+                                cartItems={this.state.cartItems}
+                                removeFromCart={this.removeFromCart}
+                                createOrder={this.createOrder}
+                                auth={this.state.auth}
+                                message={this.state.message}
+                                user={this.state.user}
+                                userMeta={this.state.userMeta}
+                            />
+                        </div>
+                    </div>
+                </main>
+                <footer>All right is reserved.</footer>
+            </div>
         );
     }
 }

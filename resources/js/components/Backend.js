@@ -6,6 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Dashboard from "./Users/Dashboard";
 import Profile from "./Users/Profile";
 import "../../css/panel.css";
+import Setting from "./Users/Setting";
+import formatCurrency from "../formatCurrency";
+import Charge from "./Users/Charge";
 
 class Backend extends React.Component {
     constructor(props) {
@@ -16,7 +19,7 @@ class Backend extends React.Component {
             email: "",
             userMeta: {},
             total: 0,
-            addClassActive: true,
+            addClassActive: 1,
         };
     }
 
@@ -80,14 +83,14 @@ class Backend extends React.Component {
                                 <ul className="nav">
                                     <li
                                         className={`nav-item ${
-                                            this.state.addClassActive === true
+                                            this.state.addClassActive === 1
                                                 ? " active"
                                                 : ""
                                         }`}
                                     >
                                         <Link
                                             onClick={() =>
-                                                this.addClassActive(true)
+                                                this.addClassActive(1)
                                             }
                                             className="nav-link"
                                             to="/dashboard"
@@ -100,14 +103,14 @@ class Backend extends React.Component {
                                     </li>
                                     <li
                                         className={`nav-item ${
-                                            this.state.addClassActive === false
+                                            this.state.addClassActive === 2
                                                 ? " active"
                                                 : ""
                                         }`}
                                     >
                                         <Link
                                             onClick={() =>
-                                                this.addClassActive(false)
+                                                this.addClassActive(2)
                                             }
                                             className="nav-link"
                                             to="/profile"
@@ -118,16 +121,37 @@ class Backend extends React.Component {
                                             <p>User Profile</p>
                                         </Link>
                                     </li>
-                                    <li className="nav-item ">
-                                        <a
+                                    <li
+                                        className={`nav-item ${
+                                            this.state.addClassActive === 3
+                                                ? "active"
+                                                : ""
+                                        }  `}
+                                    >
+                                        <Link
+                                            onClick={() =>
+                                                this.addClassActive(3)
+                                            }
                                             className="nav-link"
-                                            href="./tables.html"
+                                            to="/setting"
                                         >
                                             <i className="material-icons">
                                                 content_paste
                                             </i>
-                                            <p>Table List</p>
-                                        </a>
+                                            <p>Setting</p>
+                                        </Link>
+                                        <Link
+                                            onClick={() =>
+                                                this.addClassActive(4)
+                                            }
+                                            className="nav-link"
+                                            to="/charge"
+                                        >
+                                            <i className="material-icons">
+                                                bubble_chart
+                                            </i>
+                                            <p>Charge</p>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -140,8 +164,22 @@ class Backend extends React.Component {
                                             className="navbar-brand"
                                             href="javascript:;"
                                         >
-                                            Welcome {this.state.email}
+                                            Welcome {this.state.email}{" "}
                                         </a>
+                                        Your Money Account :{" "}
+                                        {this.state.userMeta
+                                            ? "$" + this.state.userMeta.charge
+                                            : "$0"}
+                                        <Link to="/charge">
+                                            {" "}
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary btn-sm"
+                                            >
+                                                <span class="glyphicon glyphicon-plus"></span>{" "}
+                                                Charge
+                                            </button>
+                                        </Link>
                                     </div>
                                     <button
                                         className="navbar-toggler"
@@ -283,6 +321,12 @@ class Backend extends React.Component {
                                             userMeta={this.state.userMeta}
                                             handlerInput={this.handlerInput}
                                         />
+                                    </Route>
+                                    <Route path="/setting">
+                                        <Setting />
+                                    </Route>
+                                    <Route path="/charge">
+                                        <Charge />
                                     </Route>
                                 </Switch>
                                 <footer className="footer">

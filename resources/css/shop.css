@@ -274,3 +274,13 @@ header {
     align-items: center;
     font-size: 32px;
 }
+
+.card-footer p {
+    color: blue;
+}
+.card-footer input {
+   width: 300px;
+   float: right;
+
+}
+
