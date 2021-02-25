@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserMeta;
+use App\Models\UserCard;
 
 
 class UserController extends Controller
@@ -22,7 +23,8 @@ class UserController extends Controller
             $userId = Auth::id();
             $user = User::where(['id'=>$userId])->first();
             $userMeta = UserMeta::where(['user_id'=>$userId])->first();
-            return response()->json(['status'=>200,"user"=>$user,'userMeta'=>$userMeta]);
+            $userCard = UserCard::where(['user_id'=>$userId])->get();
+            return response()->json(['status'=>200,"user"=>$user,'userMeta'=>$userMeta,'userCard'=>$userCard]);
         }
         return response()->json(['status'=>400]);
     }
@@ -137,7 +139,7 @@ class UserController extends Controller
     {
         //
     }
-
+    //login user
     public function login(Request $request) 
     {
         $email = $request->email;
@@ -151,7 +153,7 @@ class UserController extends Controller
 
         return response()->json(['status'=>400]);
     }
-
+    // logout user
     public function logout(Request $request) 
     {
         if(Auth::check()) 
@@ -166,7 +168,7 @@ class UserController extends Controller
         }
         return response()->json(['status'=>400]);
     }
-
+    // Change avatar image user
     public function image(Request $request)
     {
       
@@ -186,7 +188,7 @@ class UserController extends Controller
             return response()->json(['status'=>200,'image'=>$request->file('image')]);
         
     }
-
+    // Change password User
     public function setting(Request $request)
     {
         $userId = Auth::id();
@@ -200,6 +202,27 @@ class UserController extends Controller
 
         }
         return response()->json(['status'=>400]);
+
+    }
+    // Store Card from customer
+    public function card(Request $request)
+    {   
+        $userId = Auth::id();
+        $card = UserCard::create([
+            'user_id'=>$userId,
+            'name'=>$request->nameCard,
+            'number'=>$request->numberCard,
+            'cvv2'=>$request->cvv2Card,
+            'month'=>$request->monthCard,
+            'year'=>$request->yearCard,
+        ]);
+
+        if($card) {
+            return response()->json(['status'=>200]);
+
+        }
+        return response()->json(['status'=>400]);
+
 
     }
 }

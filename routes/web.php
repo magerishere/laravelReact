@@ -29,6 +29,7 @@ Route::post('/user/logout',[UserController::class,'logout']);
 Route::resource('/product',ProductController::class);
 Route::post('/user/image',[UserController::class,'image']);
 Route::post('/user/setting',[UserController::class,'setting']);
+Route::post('/user/card',[UserController::class,'card']);
 Route::get('/dashboard',function(){
     return view('dashboard');
 });

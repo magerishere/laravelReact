@@ -7,7 +7,7 @@ import Dashboard from "./Users/Dashboard";
 import Profile from "./Users/Profile";
 import "../../css/panel.css";
 import Setting from "./Users/Setting";
-import formatCurrency from "../formatCurrency";
+
 import Charge from "./Users/Charge";
 
 class Backend extends React.Component {
@@ -18,23 +18,27 @@ class Backend extends React.Component {
             userId: Number,
             email: "",
             userMeta: {},
+            userCard: {},
             total: 0,
             addClassActive: 1,
         };
     }
 
     async componentDidMount() {
+        console.log('didmount');
         const res = await axios.get("/user");
         if (res.data.status === 200) {
             const userId = res.data.user.id;
             const email = res.data.user.email;
             const userMeta = res.data.userMeta;
+            const userCard = res.data.userCard;
             console.log(res.data.user);
             console.log(userId);
             this.setState({
                 userId: userId,
                 email: email,
                 userMeta: userMeta,
+                userCard: userCard,
             });
         }
         const response = await axios.get("/product");
@@ -140,6 +144,14 @@ class Backend extends React.Component {
                                             </i>
                                             <p>Setting</p>
                                         </Link>
+                                    </li>
+                                    <li
+                                        className={`nav-item ${
+                                            this.state.addClassActive === 4
+                                                ? "active"
+                                                : ""
+                                        }  `}
+                                    >
                                         <Link
                                             onClick={() =>
                                                 this.addClassActive(4)
@@ -275,18 +287,21 @@ class Backend extends React.Component {
                                                     className="dropdown-menu dropdown-menu-right"
                                                     aria-labelledby="navbarDropdownProfile"
                                                 >
-                                                    <a
+                                                    <Link
+                                                    onClick={() => this.addClassActive(2)}
                                                         className="dropdown-item"
-                                                        href="#"
+                                                        to="/profile"
                                                     >
                                                         Profile
-                                                    </a>
-                                                    <a
+                                                    </Link>
+                                                    <Link
+                                                    onClick={() => this.addClassActive(3)}
+
                                                         className="dropdown-item"
-                                                        href="#"
+                                                        to="/setting"
                                                     >
                                                         Settings
-                                                    </a>
+                                                    </Link>
                                                     <div className="dropdown-divider"></div>
                                                     <a
                                                         className="dropdown-item"
@@ -326,7 +341,7 @@ class Backend extends React.Component {
                                         <Setting />
                                     </Route>
                                     <Route path="/charge">
-                                        <Charge />
+                                        <Charge userCard={this.state.userCard} />
                                     </Route>
                                 </Switch>
                                 <footer className="footer">
