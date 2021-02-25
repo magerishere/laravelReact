@@ -12465,6 +12465,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
     padding: 0.9375rem 0;
     text-align: center;
     display: flex;
+  
 }
 .footer ul {
     margin-bottom: 0;
@@ -16157,4 +16158,8 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
     color: red;
     background-color: black;
   
+}
+
+.rowRed {
+    background-color: red;
 }

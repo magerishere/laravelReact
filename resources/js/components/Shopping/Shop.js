@@ -6,6 +6,7 @@ import data from "../../data.json";
 import "../../../css/shop.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import formatCurrency from "../../formatCurrency";
 
 class Shop extends React.Component {
     constructor() {
@@ -56,7 +57,6 @@ class Shop extends React.Component {
                 item.count++;
                 alreadyInCart = true;
             }
-            console.log(cartItems);
         });
         if (!alreadyInCart) {
             cartItems.push({ ...product, count: 1 });
@@ -81,24 +81,6 @@ class Shop extends React.Component {
     sortProducts = (event) => {
         // imp
         let sort = event.target.value;
-        // this.setState((state) => ({
-        //   sort: sort,
-        //   products: this.state.products
-        //     .slice()
-        //     .sort((a, b) =>
-        //       sort === "lowest"
-        //         ? a.price > b.price
-        //           ? 1
-        //           : -1
-        //         : sort === "highest"
-        //         ? a.price < b.price
-        //           ? 1
-        //           : -1
-        //         : a._id > b._id
-        //         ? 1
-        //         : -1
-        //     ),
-        // }));
         const products = this.state.products
             .slice()
             .sort((a, b) =>
@@ -118,14 +100,18 @@ class Shop extends React.Component {
     };
 
     createOrder = async (orders) => {
-        console.log(orders.order);
+        let total = Math.round(
+            orders.order.reduce((a, c) => a + c.price * c.count, 0)
+        );
+        console.log(total);
         const size = this.state.size;
         if (this.state.auth) {
             const res = await axios.post("/product", {
                 products: orders.order,
                 size: size,
+                total: total,
             });
-            console.log(res.data.products);
+
             if (res.data.status === 200) {
                 this.setState({
                     message: "Your order successfuly submit!",
@@ -137,7 +123,6 @@ class Shop extends React.Component {
         } else {
             alert("need to save " + orders.name);
         }
-        // console.log(orders.order.length);
     };
 
     render() {

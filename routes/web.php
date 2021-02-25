@@ -30,6 +30,10 @@ Route::resource('/product',ProductController::class);
 Route::post('/user/image',[UserController::class,'image']);
 Route::post('/user/setting',[UserController::class,'setting']);
 Route::post('/user/card',[UserController::class,'card']);
+Route::post('/user/charge',[UserController::class,'charge']);
+Route::post('/user/card/delete',[UserController::class,'cardDelete']);
+
+
 Route::get('/dashboard',function(){
     return view('dashboard');
 });

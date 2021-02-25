@@ -225,4 +225,25 @@ class UserController extends Controller
 
 
     }
+
+    // charge account user
+    public function charge(Request $request)
+    {
+        $userId = Auth::id();
+        $userMeta = UserMeta::where(['user_id'=>$userId])->first();
+        $charge = $userMeta->charge;
+        $userMeta->update([
+            'charge'=>$request->charge + $charge,
+        ]);
+        return response()->json(['status'=>200]);
+    }
+
+    public function cardDelete(Request $request) 
+    {
+        foreach($request->deleteList as $id) 
+        {
+            UserCard::where(['id'=>$id])->delete();
+        }
+        return response()->json(['status'=>200]);
+    }
 }

@@ -71,7 +71,7 @@ export default class Dashboard extends Component {
                                             <th>Count</th>
                                             <th>Price</th>
                                             <th>Total</th>
-                                            <th>Pay</th>
+                                           
                                             <th>Deliver</th>
                                         </thead>
                                         <tbody>
@@ -93,11 +93,7 @@ export default class Dashboard extends Component {
                                                                     product.price
                                                             )}
                                                         </td>
-                                                        <td>
-                                                            {product.pay
-                                                                ? "Yes"
-                                                                : "No"}
-                                                        </td>
+                                        
                                                         <td>
                                                             {product.deliver
                                                                 ? "Yes"

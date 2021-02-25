@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use App\Models\UserMeta;
 
 class ProductController extends Controller
 {
@@ -42,6 +43,12 @@ class ProductController extends Controller
         //
         $userId = Auth::id();
         $data = $request->products;
+        $userMeta = UserMeta::where(['user_id'=>$userId])->first();
+        $charge = $userMeta->charge;
+        $total = $charge - $request->total;
+        $userMeta->update([
+            'charge'=>$total
+        ]);
         for($i=0;$i < count($data);$i++) {
             $product = Product::create([
                 'user_id'=>$userId,

@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->integer('count');
             $table->string('size',5)->nullable();
             $table->bigInteger('price');
-            $table->boolean('pay')->default(false);
             $table->boolean('deliver')->default(false);
 
             $table->timestamps();
