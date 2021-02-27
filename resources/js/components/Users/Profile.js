@@ -5,7 +5,12 @@ import Fade from "react-reveal/Fade";
 export default class Profile extends Component {
     constructor(props) {
         super(props);
-        this.state = { user: this.props.userMeta, message: "", photo: "" };
+        this.state = { userMeta: {}, message: "", photo: "" };
+    }
+
+    async componentDidMount() {
+        const res = await axios.get("/user");
+        this.setState({ userMeta: res.data.userMeta });
     }
 
     handlerInput = (e) => {
@@ -13,8 +18,8 @@ export default class Profile extends Component {
         let name = e.target.name;
         let value = e.target.value;
         this.setState((state) => ({
-            user: {
-                ...state.user,
+            userMeta: {
+                ...state.userMeta,
                 [name]: value,
             },
         }));
@@ -25,7 +30,7 @@ export default class Profile extends Component {
 
         const res = await axios.patch(
             `/user/${this.props.userId}`,
-            this.state.user
+            this.state.userMeta
         );
         if (res.data.status === 200) {
             this.setState({ message: "Successful Update" });
@@ -37,8 +42,8 @@ export default class Profile extends Component {
         const value = e.target.files[0];
         const name = e.target.name;
         this.setState((state) => ({
-            user: {
-                ...state.user,
+            userMeta: {
+                ...state.userMeta,
                 [name]: value,
             },
         }));
@@ -106,8 +111,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state.user
-                                                            ? this.state.user
+                                                        this.state.userMeta
+                                                            ? this.state
+                                                                  .userMeta
                                                                   .fname
                                                             : ""
                                                     }
@@ -125,8 +131,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state.user
-                                                            ? this.state.user
+                                                        this.state.userMeta
+                                                            ? this.state
+                                                                  .userMeta
                                                                   .lname
                                                             : ""
                                                     }
@@ -146,8 +153,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state.user
-                                                            ? this.state.user
+                                                        this.state.userMeta
+                                                            ? this.state
+                                                                  .userMeta
                                                                   .address
                                                             : ""
                                                     }
@@ -167,9 +175,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state.user
-                                                            ? this.state.user
-                                                                  .city
+                                                        this.state.userMeta
+                                                            ? this.state
+                                                                  .userMeta.city
                                                             : ""
                                                     }
                                                 />
@@ -186,8 +194,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state.user
-                                                            ? this.state.user
+                                                        this.state.userMeta
+                                                            ? this.state
+                                                                  .userMeta
                                                                   .country
                                                             : ""
                                                     }
@@ -205,8 +214,9 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
-                                                        this.state.user
-                                                            ? this.state.user
+                                                        this.state.userMeta
+                                                            ? this.state
+                                                                  .userMeta
                                                                   .postalCode
                                                             : ""
                                                     }
@@ -228,9 +238,9 @@ export default class Profile extends Component {
                                                             this.handlerInput
                                                         }
                                                         value={
-                                                            this.state.user
+                                                            this.state.userMeta
                                                                 ? this.state
-                                                                      .user
+                                                                      .userMeta
                                                                       .about
                                                                 : ""
                                                         }
@@ -271,13 +281,14 @@ export default class Profile extends Component {
                                     {this.props.email}
                                 </h6>
                                 <h4 className="card-title">
-                                    {this.state.user &&
-                                        this.state.user.fname +
+                                    {this.state.userMeta &&
+                                        this.state.userMeta.fname +
                                             " " +
-                                            this.state.user.lname}
+                                            this.state.userMeta.lname}
                                 </h4>
                                 <p className="card-description">
-                                    {this.state.user && this.state.user.about}
+                                    {this.state.userMeta &&
+                                        this.state.userMeta.about}
                                 </p>
                                 <a
                                     href="javascript:;"

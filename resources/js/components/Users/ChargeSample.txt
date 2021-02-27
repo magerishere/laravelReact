@@ -16,7 +16,6 @@ export default class Charge extends Component {
             charge: null,
             deleteList: [],
         };
-        this.charge = React.createRef();
     }
     handlerInput = (e) => {
         this.setState({ [e.target.name]: e.target.value });
@@ -67,7 +66,6 @@ export default class Charge extends Component {
     };
     chargeSubmit = async (e) => {
         e.preventDefault();
-        this.props.updateCharge(this.state.charge);
         const res = await axios.post("/user/charge", {
             charge: this.state.charge,
         });
@@ -105,7 +103,6 @@ export default class Charge extends Component {
                                                 onClick={() =>
                                                     this.setState({
                                                         useCard: null,
-                                                        message: "",
                                                     })
                                                 }
                                             />
@@ -377,7 +374,8 @@ export default class Charge extends Component {
                                         )}
                                     </div>
                                     <div className="card-body">
-                                        {this.state.userCardRealTime && (
+                                        {this.props.userCard.length > 0 &&
+                                        !this.state.userCardRealTime ? (
                                             <table className="table table-hover">
                                                 <thead>
                                                     <th>Name</th>
@@ -385,7 +383,7 @@ export default class Charge extends Component {
                                                     <th>Use</th>
                                                 </thead>
                                                 <tbody>
-                                                    {this.state.userCardRealTime.map(
+                                                    {this.props.userCard.map(
                                                         (card) => (
                                                             <tr
                                                                 key={card.id}
@@ -434,6 +432,69 @@ export default class Charge extends Component {
                                                             </tr>
                                                         )
                                                     )}
+                                                </tbody>
+                                            </table>
+                                        ) : (
+                                            <table className="table table-hover">
+                                                <thead>
+                                                    <th>Name</th>
+                                                    <th>Number Card</th>
+                                                    <th>Use</th>
+                                                </thead>
+                                                <tbody>
+                                                    {this.state
+                                                        .userCardRealTime &&
+                                                        this.state.userCardRealTime.map(
+                                                            (card) => (
+                                                                <tr
+                                                                    key={
+                                                                        card.id
+                                                                    }
+                                                                    className={
+                                                                        this.state.deleteList.indexOf(
+                                                                            card.id
+                                                                        ) > -1
+                                                                            ? "bg-danger deleteSuccess"
+                                                                            : ""
+                                                                    }
+                                                                >
+                                                                    <td
+                                                                        onClick={() =>
+                                                                            this.deleteListHandler(
+                                                                                card.id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        {card.name
+                                                                            ? card.name
+                                                                            : "None"}
+                                                                    </td>
+                                                                    <td
+                                                                        onClick={() =>
+                                                                            this.deleteListHandler(
+                                                                                card.id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            card.number
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        <input
+                                                                            onClick={() =>
+                                                                                this.addUseCard(
+                                                                                    card
+                                                                                )
+                                                                            }
+                                                                            className="btn btn-primary"
+                                                                            type="button"
+                                                                            value="Use"
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        )}
                                                 </tbody>
                                             </table>
                                         )}

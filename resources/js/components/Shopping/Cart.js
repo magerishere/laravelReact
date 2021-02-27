@@ -453,24 +453,23 @@ export default class Cart extends Component {
                                                 </li>
                                                 {this.state.showAddress && (
                                                     <Fade left>
-                                                    <li>
-                                                        <p>
-                                                            Please first set
-                                                            your address
-                                                        </p>
-                                                        <div>
-                                                            <a
-                                                                href="/profile"
-                                                            >
-                                                                <button
-                                                                    className="button primary"
-                                                                    type="button"
-                                                                >
-                                                                    Set Address
-                                                                </button>
-                                                            </a>
-                                                        </div>
-                                                    </li>
+                                                        <li>
+                                                            <p>
+                                                                Please first set
+                                                                your address
+                                                            </p>
+                                                            <div>
+                                                                <a href="/profile">
+                                                                    <button
+                                                                        className="button primary"
+                                                                        type="button"
+                                                                    >
+                                                                        Set
+                                                                        Address
+                                                                    </button>
+                                                                </a>
+                                                            </div>
+                                                        </li>
                                                     </Fade>
                                                 )}
                                             </ul>

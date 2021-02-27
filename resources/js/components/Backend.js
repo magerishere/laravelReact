@@ -17,8 +17,7 @@ class Backend extends React.Component {
             products: [],
             userId: Number,
             email: "",
-            userMeta: {},
-            userCard: {},
+            charge: 0,
             total: 0,
             addClassActive: 0,
         };
@@ -29,15 +28,13 @@ class Backend extends React.Component {
         if (res.data.status === 200) {
             const userId = res.data.user.id;
             const email = res.data.user.email;
-            const userMeta = res.data.userMeta;
-            const userCard = res.data.userCard;
+            const charge = res.data.userMeta.charge;
             console.log(res.data.user);
             console.log(userId);
             this.setState({
                 userId: userId,
                 email: email,
-                userMeta: userMeta,
-                userCard: userCard,
+                charge: charge,
             });
         }
         const response = await axios.get("/product");
@@ -65,6 +62,12 @@ class Backend extends React.Component {
         } else {
             console.log("Ghalat");
         }
+    };
+
+    updateCharge = (charge) => {
+        const currentCharge = this.state.charge;
+        const newCharge = Number(currentCharge) + Number(charge);
+        this.setState({ charge: newCharge });
     };
 
     componentWillMount() {
@@ -195,20 +198,17 @@ class Backend extends React.Component {
                                         >
                                             Welcome {this.state.email}{" "}
                                         </a>
-                                        Your Money Account :{" "}
-                                        {this.state.userMeta
-                                            ? "$" + this.state.userMeta.charge
-                                            : "$0"}
+
                                         <Link to="/charge">
                                             {" "}
                                             <button
                                                 type="button"
                                                 class="btn btn-primary btn-sm"
                                             >
-                                                <span class="glyphicon glyphicon-plus"></span>{" "}
                                                 Charge
                                             </button>
                                         </Link>
+                                        <span>$ {this.state.charge}</span>
                                     </div>
                                     <button
                                         className="navbar-toggler"
@@ -357,7 +357,6 @@ class Backend extends React.Component {
                                         <Profile
                                             email={this.state.email}
                                             userId={this.state.userId}
-                                            userMeta={this.state.userMeta}
                                             handlerInput={this.handlerInput}
                                         />
                                     </Route>
@@ -366,7 +365,9 @@ class Backend extends React.Component {
                                     </Route>
                                     <Route path="/charge">
                                         <Charge
-                                            userCard={this.state.userCard}
+                                            updateCharge={(charge) =>
+                                                this.updateCharge(charge)
+                                            }
                                         />
                                     </Route>
                                 </Switch>

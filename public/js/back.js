@@ -2102,12 +2102,20 @@ var Backend = /*#__PURE__*/function (_React$Component) {
       }, _callee);
     })));
 
+    _defineProperty(_assertThisInitialized(_this), "updateCharge", function (charge) {
+      var currentCharge = _this.state.charge;
+      var newCharge = Number(currentCharge) + Number(charge);
+
+      _this.setState({
+        charge: newCharge
+      });
+    });
+
     _this.state = {
       products: [],
       userId: Number,
       email: "",
-      userMeta: {},
-      userCard: {},
+      charge: 0,
       total: 0,
       addClassActive: 0
     };
@@ -2120,7 +2128,7 @@ var Backend = /*#__PURE__*/function (_React$Component) {
       var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var _this2 = this;
 
-        var res, userId, email, userMeta, userCard, response, products, total;
+        var res, userId, email, charge, response, products, total;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -2134,15 +2142,13 @@ var Backend = /*#__PURE__*/function (_React$Component) {
                 if (res.data.status === 200) {
                   userId = res.data.user.id;
                   email = res.data.user.email;
-                  userMeta = res.data.userMeta;
-                  userCard = res.data.userCard;
+                  charge = res.data.userMeta.charge;
                   console.log(res.data.user);
                   console.log(userId);
                   this.setState({
                     userId: userId,
                     email: email,
-                    userMeta: userMeta,
-                    userCard: userCard
+                    charge: charge
                   });
                 }
 
@@ -2307,15 +2313,15 @@ var Backend = /*#__PURE__*/function (_React$Component) {
                       className: "navbar-brand",
                       href: "javascript:;",
                       children: ["Welcome ", this.state.email, " "]
-                    }), "Your Money Account :", " ", this.state.userMeta ? "$" + this.state.userMeta.charge : "$0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
                       to: "/charge",
-                      children: [" ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("button", {
+                      children: [" ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
                         type: "button",
                         "class": "btn btn-primary btn-sm",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
-                          "class": "glyphicon glyphicon-plus"
-                        }), " ", "Charge"]
+                        children: "Charge"
                       })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
+                      children: ["$ ", this.state.charge]
                     })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("button", {
                     className: "navbar-toggler",
@@ -2444,7 +2450,6 @@ var Backend = /*#__PURE__*/function (_React$Component) {
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Users_Profile__WEBPACK_IMPORTED_MODULE_5__.default, {
                       email: this.state.email,
                       userId: this.state.userId,
-                      userMeta: this.state.userMeta,
                       handlerInput: this.handlerInput
                     })
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Route, {
@@ -2453,7 +2458,9 @@ var Backend = /*#__PURE__*/function (_React$Component) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Route, {
                     path: "/charge",
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Users_Charge__WEBPACK_IMPORTED_MODULE_8__.default, {
-                      userCard: this.state.userCard
+                      updateCharge: function updateCharge(charge) {
+                        return _this3.updateCharge(charge);
+                      }
                     })
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("footer", {
@@ -2626,7 +2633,7 @@ var Charge = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "formSubmit", /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(e) {
-        var res;
+        var res, response, userCardRealTime;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -2638,18 +2645,35 @@ var Charge = /*#__PURE__*/function (_Component) {
               case 3:
                 res = _context2.sent;
 
-                if (res.data.status === 200) {
+                if (!(res.data.status === 200)) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                _this.setState({
+                  message: "card has been added",
+                  numberCard: "",
+                  cvv2Card: "",
+                  monthCard: "",
+                  yearCard: "",
+                  nameCard: ""
+                });
+
+                _context2.next = 8;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/user");
+
+              case 8:
+                response = _context2.sent;
+
+                if (response.data.status === 200) {
+                  userCardRealTime = response.data.userCard;
+
                   _this.setState({
-                    message: "card has been added",
-                    numberCard: "",
-                    cvv2Card: "",
-                    monthCard: "",
-                    yearCard: "",
-                    nameCard: ""
+                    userCardRealTime: userCardRealTime
                   });
                 }
 
-              case 5:
+              case 10:
               case "end":
                 return _context2.stop();
             }
@@ -2670,12 +2694,15 @@ var Charge = /*#__PURE__*/function (_Component) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 e.preventDefault();
-                _context3.next = 3;
+
+                _this.props.updateCharge(_this.state.charge);
+
+                _context3.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/user/charge", {
                   charge: _this.state.charge
                 });
 
-              case 3:
+              case 4:
                 res = _context3.sent;
 
                 if (res.data.status === 200) {
@@ -2684,7 +2711,7 @@ var Charge = /*#__PURE__*/function (_Component) {
                   });
                 }
 
-              case 5:
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -2699,6 +2726,7 @@ var Charge = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "addUseCard", function (card) {
       _this.setState({
+        message: "",
         useCard: card
       });
     });
@@ -2714,10 +2742,46 @@ var Charge = /*#__PURE__*/function (_Component) {
       charge: null,
       deleteList: []
     };
+    _this.charge = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createRef();
     return _this;
   }
 
   _createClass(Charge, [{
+    key: "componentDidMount",
+    value: function () {
+      var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var res;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/user");
+
+              case 2:
+                res = _context4.sent;
+
+                if (res.data.status === 200) {
+                  this.setState({
+                    userCardRealTime: res.data.userCard
+                  });
+                }
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function componentDidMount() {
+        return _componentDidMount.apply(this, arguments);
+      }
+
+      return componentDidMount;
+    }()
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -2745,7 +2809,8 @@ var Charge = /*#__PURE__*/function (_Component) {
                       value: "back",
                       onClick: function onClick() {
                         return _this2.setState({
-                          useCard: null
+                          useCard: null,
+                          message: ""
                         });
                       }
                     })]
@@ -2968,7 +3033,7 @@ var Charge = /*#__PURE__*/function (_Component) {
                     })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                     className: "card-body",
-                    children: this.props.userCard.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
+                    children: this.state.userCardRealTime && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
                       className: "table table-hover",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("thead", {
                         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
@@ -2979,7 +3044,7 @@ var Charge = /*#__PURE__*/function (_Component) {
                           children: "Use"
                         })]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tbody", {
-                        children: this.props.userCard.map(function (card) {
+                        children: this.state.userCardRealTime.map(function (card) {
                           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                             className: _this2.state.deleteList.indexOf(card.id) > -1 ? "bg-danger deleteSuccess" : "",
                             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
@@ -3285,7 +3350,7 @@ var Profile = /*#__PURE__*/function (_Component) {
 
       _this.setState(function (state) {
         return {
-          user: _objectSpread(_objectSpread({}, state.user), {}, _defineProperty({}, name, value))
+          userMeta: _objectSpread(_objectSpread({}, state.userMeta), {}, _defineProperty({}, name, value))
         };
       });
     });
@@ -3299,7 +3364,7 @@ var Profile = /*#__PURE__*/function (_Component) {
               case 0:
                 e.preventDefault();
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().patch("/user/".concat(_this.props.userId), _this.state.user);
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().patch("/user/".concat(_this.props.userId), _this.state.userMeta);
 
               case 3:
                 res = _context.sent;
@@ -3331,7 +3396,7 @@ var Profile = /*#__PURE__*/function (_Component) {
 
       _this.setState(function (state) {
         return {
-          user: _objectSpread(_objectSpread({}, state.user), {}, _defineProperty({}, name, value))
+          userMeta: _objectSpread(_objectSpread({}, state.userMeta), {}, _defineProperty({}, name, value))
         };
       });
     });
@@ -3344,7 +3409,7 @@ var Profile = /*#__PURE__*/function (_Component) {
     });
 
     _this.state = {
-      user: _this.props.userMeta,
+      userMeta: {},
       message: "",
       photo: ""
     };
@@ -3352,6 +3417,38 @@ var Profile = /*#__PURE__*/function (_Component) {
   }
 
   _createClass(Profile, [{
+    key: "componentDidMount",
+    value: function () {
+      var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var res;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/user");
+
+              case 2:
+                res = _context2.sent;
+                this.setState({
+                  userMeta: res.data.userMeta
+                });
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function componentDidMount() {
+        return _componentDidMount.apply(this, arguments);
+      }
+
+      return componentDidMount;
+    }()
+  }, {
     key: "render",
     value: function render() {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -3419,7 +3516,7 @@ var Profile = /*#__PURE__*/function (_Component) {
                           name: "fname",
                           className: "form-control",
                           onChange: this.handlerInput,
-                          value: this.state.user ? this.state.user.fname : ""
+                          value: this.state.userMeta ? this.state.userMeta.fname : ""
                         })]
                       })
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -3434,7 +3531,7 @@ var Profile = /*#__PURE__*/function (_Component) {
                           name: "lname",
                           className: "form-control",
                           onChange: this.handlerInput,
-                          value: this.state.user ? this.state.user.lname : ""
+                          value: this.state.userMeta ? this.state.userMeta.lname : ""
                         })]
                       })
                     })]
@@ -3452,7 +3549,7 @@ var Profile = /*#__PURE__*/function (_Component) {
                           name: "address",
                           className: "form-control",
                           onChange: this.handlerInput,
-                          value: this.state.user ? this.state.user.address : ""
+                          value: this.state.userMeta ? this.state.userMeta.address : ""
                         })]
                       })
                     })
@@ -3470,7 +3567,7 @@ var Profile = /*#__PURE__*/function (_Component) {
                           name: "city",
                           className: "form-control",
                           onChange: this.handlerInput,
-                          value: this.state.user ? this.state.user.city : ""
+                          value: this.state.userMeta ? this.state.userMeta.city : ""
                         })]
                       })
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -3485,7 +3582,7 @@ var Profile = /*#__PURE__*/function (_Component) {
                           name: "country",
                           className: "form-control",
                           onChange: this.handlerInput,
-                          value: this.state.user ? this.state.user.country : ""
+                          value: this.state.userMeta ? this.state.userMeta.country : ""
                         })]
                       })
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -3500,7 +3597,7 @@ var Profile = /*#__PURE__*/function (_Component) {
                           name: "postalCode",
                           className: "form-control",
                           onChange: this.handlerInput,
-                          value: this.state.user ? this.state.user.postalCode : ""
+                          value: this.state.userMeta ? this.state.userMeta.postalCode : ""
                         })]
                       })
                     })]
@@ -3519,7 +3616,7 @@ var Profile = /*#__PURE__*/function (_Component) {
                             name: "about",
                             rows: "5",
                             onChange: this.handlerInput,
-                            value: this.state.user ? this.state.user.about : ""
+                            value: this.state.userMeta ? this.state.userMeta.about : ""
                           })
                         })]
                       })
@@ -3561,10 +3658,10 @@ var Profile = /*#__PURE__*/function (_Component) {
                   children: this.props.email
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h4", {
                   className: "card-title",
-                  children: this.state.user && this.state.user.fname + " " + this.state.user.lname
+                  children: this.state.userMeta && this.state.userMeta.fname + " " + this.state.userMeta.lname
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
                   className: "card-description",
-                  children: this.state.user && this.state.user.about
+                  children: this.state.userMeta && this.state.userMeta.about
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
                   href: "javascript:;",
                   className: "btn btn-primary btn-round",
