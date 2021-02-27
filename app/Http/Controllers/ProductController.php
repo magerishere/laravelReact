@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\UserMeta;
 use App\Models\Customer;
+use App\Models\Bill;
 class ProductController extends Controller
 {
     /**
@@ -53,12 +54,19 @@ class ProductController extends Controller
         ]);
         for($i=0;$i < count($products);$i++) {
             $product = Product::create([
+                'bill_id'=>$request->bill_id,
                 'user_id'=>$userId,
                 'name'=>$products[$i]['title'],
                 'count'=>$products[$i]['count'],
                 'price'=>$products[$i]['price'],
             ]);
         }
+
+        $bill = Bill::create([
+            'bill_id'=>$request->bill_id,
+            'user_id'=>$userId,
+            'total'=>$request->total,
+        ]);
 
   
     
@@ -75,6 +83,8 @@ class ProductController extends Controller
     public function show($id)
     {
         //
+        $products = Product::where(['bill_id'=>$id])->get();
+        return response()->json(['status'=>200,'products'=>$products]);
     }
 
     /**

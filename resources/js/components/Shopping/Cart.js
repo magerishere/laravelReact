@@ -3,6 +3,7 @@ import formatCurrency from "../../formatCurrency";
 import Fade from "react-reveal/Fade";
 import Modal from "react-modal";
 import Zoom from "react-reveal/Zoom";
+
 export default class Cart extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +15,7 @@ export default class Cart extends Component {
             finishBuy: false,
             total: 0,
             showAddress: false,
+            bill_id: Math.random().toString(36).substr(2, 9),
         };
     }
 
@@ -26,6 +28,7 @@ export default class Cart extends Component {
             name: this.state.name,
             email: this.state.email,
             address: this.state.address,
+            bill_id: this.state.bill_id,
             order: this.props.cartItems,
         };
 
@@ -47,6 +50,7 @@ export default class Cart extends Component {
 
     checkAddress = () => {
         const address = this.props.userMeta.address;
+
         if (address) {
             this.setState({ finishBuy: true });
         } else {
@@ -84,7 +88,7 @@ export default class Cart extends Component {
                                         </a>
                                         <div class="float-right">
                                             <h3 class="mb-0">
-                                                Invoice #BBB10234
+                                                Invoice #{this.state.bill_id}
                                             </h3>
                                             Date: 12 Jun,2019
                                         </div>

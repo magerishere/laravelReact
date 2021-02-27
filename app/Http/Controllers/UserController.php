@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserMeta;
 use App\Models\UserCard;
+use App\Models\Bill;
 
 
 class UserController extends Controller
@@ -24,7 +25,8 @@ class UserController extends Controller
             $user = User::where(['id'=>$userId])->first();
             $userMeta = UserMeta::where(['user_id'=>$userId])->first();
             $userCard = UserCard::where(['user_id'=>$userId])->get();
-            return response()->json(['status'=>200,"user"=>$user,'userMeta'=>$userMeta,'userCard'=>$userCard]);
+            $bills = Bill::where(['user_id'=>$userId])->get();
+            return response()->json(['status'=>200,"user"=>$user,'userMeta'=>$userMeta,'userCard'=>$userCard,'bills'=>$bills]);
         }
         return response()->json(['status'=>400]);
     }

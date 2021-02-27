@@ -2574,6 +2574,7 @@ var Cart = /*#__PURE__*/function (_Component) {
         name: _this.state.name,
         email: _this.state.email,
         address: _this.state.address,
+        bill_id: _this.state.bill_id,
         order: _this.props.cartItems
       };
 
@@ -2619,7 +2620,8 @@ var Cart = /*#__PURE__*/function (_Component) {
       showCheckout: false,
       finishBuy: false,
       total: 0,
-      showAddress: false
+      showAddress: false,
+      bill_id: Math.random().toString(36).substr(2, 9)
     };
     return _this;
   }
@@ -2657,9 +2659,9 @@ var Cart = /*#__PURE__*/function (_Component) {
                     children: "example.com"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                     "class": "float-right",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h3", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("h3", {
                       "class": "mb-0",
-                      children: "Invoice #BBB10234"
+                      children: ["Invoice #", this.state.bill_id]
                     }), "Date: 12 Jun,2019"]
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -3482,6 +3484,7 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                 return axios__WEBPACK_IMPORTED_MODULE_7___default().post("/product", {
                   products: orders.order,
                   size: size,
+                  bill_id: orders.bill_id,
                   total: total
                 });
 
@@ -3534,6 +3537,30 @@ var Shop = /*#__PURE__*/function (_React$Component) {
       };
     }());
 
+    _defineProperty(_assertThisInitialized(_this), "logout", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_7___default().post("/user/logout", "");
+
+            case 2:
+              res = _context2.sent;
+
+              if (res.data.status === 200) {
+                window.location.replace("http://example.local/");
+              }
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    })));
+
     _this.state = {
       products: _data_json__WEBPACK_IMPORTED_MODULE_5__.products,
       cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
@@ -3549,17 +3576,17 @@ var Shop = /*#__PURE__*/function (_React$Component) {
   _createClass(Shop, [{
     key: "componentDidMount",
     value: function () {
-      var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var res;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                _context2.next = 2;
+                _context3.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_7___default().get("/user");
 
               case 2:
-                res = _context2.sent;
+                res = _context3.sent;
 
                 if (res.data.status === 200) {
                   this.setState({
@@ -3575,10 +3602,10 @@ var Shop = /*#__PURE__*/function (_React$Component) {
 
               case 4:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
       function componentDidMount() {
@@ -3590,10 +3617,18 @@ var Shop = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
         className: "grid-container",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("header", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
+          children: [this.state.auth && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
+            href: "#",
+            onClick: function onClick() {
+              return _this2.logout();
+            },
+            children: "Logout"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
             href: "/",
             children: "\u0641\u0631\u0648\u0634\u06AF\u0627\u0647 \u0627\u0644\u0647\u0647"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {

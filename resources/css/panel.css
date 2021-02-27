@@ -5193,7 +5193,6 @@ button.bg-dark:hover {
     display: block;
     clear: both;
     content: "";
-   
 }
 
 .clearfix p {
@@ -12465,7 +12464,6 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
     padding: 0.9375rem 0;
     text-align: center;
     display: flex;
-  
 }
 .footer ul {
     margin-bottom: 0;
@@ -16153,13 +16151,54 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
     }
 }
 
-
 .modalShow {
     color: red;
     background-color: black;
-  
 }
 
 .rowRed {
     background-color: red;
+}
+
+.invoice {
+    margin: 40px auto;
+    text-align: left;
+    width: 80%;
+}
+.invoice td {
+    padding: 5px 0;
+}
+.invoice .invoice-items {
+    width: 100%;
+}
+.invoice .invoice-items td {
+    border-top: #eee 1px solid;
+}
+.invoice .invoice-items .total td {
+    border-top: 2px solid #333;
+    border-bottom: 2px solid #333;
+    font-weight: 700;
+}
+.last {
+    margin-bottom: 0;
+}
+
+.first {
+    margin-top: 0;
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+.alignright {
+    text-align: right;
+}
+
+.alignleft {
+    text-align: left;
+}
+
+.clear {
+    clear: both;
 }

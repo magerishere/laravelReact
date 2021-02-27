@@ -25,6 +25,7 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
+        "moment": "^2.29.1",
         "react-bootstrap": "^1.5.0",
         "react-modal": "^3.12.1",
         "react-redux": "^7.2.2",

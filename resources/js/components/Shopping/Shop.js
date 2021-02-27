@@ -109,6 +109,7 @@ class Shop extends React.Component {
             const res = await axios.post("/product", {
                 products: orders.order,
                 size: size,
+                bill_id: orders.bill_id,
                 total: total,
             });
 
@@ -134,11 +135,26 @@ class Shop extends React.Component {
         }
     };
 
+    logout = async () => {
+        const res = await axios.post("/user/logout", "");
+        if (res.data.status === 200) {
+            window.location.replace("http://example.local/");
+        }
+    };
+
     render() {
         return (
             <div className="grid-container">
                 <header>
-                    <a href="/">فروشگاه الهه</a>
+                    {this.state.auth && (
+                        <a href="#" onClick={() => this.logout()}>
+                            Logout
+                        </a>
+                    )}
+
+                    <a href="/">
+                        فروشگاه الهه
+                    </a>
                     <div className="toolbar">
                         {this.state.auth ? (
                             <div>

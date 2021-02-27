@@ -14,12 +14,12 @@ class Backend extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: [],
             userId: Number,
             email: "",
             charge: 0,
             total: 0,
             addClassActive: 0,
+            bills: {},
         };
     }
 
@@ -29,26 +29,16 @@ class Backend extends React.Component {
             const userId = res.data.user.id;
             const email = res.data.user.email;
             const charge = res.data.userMeta.charge;
+            const bills = res.data.bills;
             console.log(res.data.user);
             console.log(userId);
             this.setState({
                 userId: userId,
+
                 email: email,
                 charge: charge,
+                bills: bills,
             });
-        }
-        const response = await axios.get("/product");
-        if (response.data.status === 200) {
-            const products = response.data.products;
-            this.setState({ products: products });
-            console.log(products);
-
-            let { total } = this.state;
-            this.state.products.forEach((product) =>
-                this.setState({
-                    total: (total += product.price * product.count),
-                })
-            );
         }
     }
     addClassActive = (value) => {
@@ -199,7 +189,12 @@ class Backend extends React.Component {
                                             Welcome {this.state.email}{" "}
                                         </a>
 
-                                        <Link to="/charge">
+                                        <Link
+                                            to="/charge"
+                                            onClick={() =>
+                                                this.addClassActive(4)
+                                            }
+                                        >
                                             {" "}
                                             <button
                                                 type="button"
@@ -349,7 +344,8 @@ class Backend extends React.Component {
                                 <Switch>
                                     <Route path="/dashboard">
                                         <Dashboard
-                                            products={this.state.products}
+                                            bills={this.state.bills}
+                                            email={this.state.email}
                                             total={this.state.total}
                                         />
                                     </Route>
