@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Product;
-use App\Models\UserMeta;
 use App\Models\Customer;
-class ProductController extends Controller
+use App\Models\Product;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderShipped;
+
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +18,6 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $user = Auth::user();
-        $products = $user->product()->get();
-        return response()->json(['status'=>200,'products'=>$products]);
     }
 
     /**
@@ -41,29 +39,28 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-     
-
-        $userId = Auth::id();
+          
         $products = $request->products;
-        $userMeta = UserMeta::where(['user_id'=>$userId])->first();
-        $charge = $userMeta->charge;
-        $total = $charge - $request->total;
-        $userMeta->update([
-            'charge'=>$total
+        $name = $request->name;
+        $email = $request->email;
+        $address = $request->address;
+        $userMeta = Customer::create([
+            'name'=>$name,
+            'email'=>$email,
+            'address'=>$address,
         ]);
-        for($i=0;$i < count($products);$i++) {
+        for($i=0;$i < count($products);$i++)
+        {
             $product = Product::create([
-                'user_id'=>$userId,
                 'name'=>$products[$i]['title'],
                 'count'=>$products[$i]['count'],
                 'price'=>$products[$i]['price'],
             ]);
         }
 
-  
-    
-        
+        // Mail::to('immagerishere@gmail.com')->send(new OrderShipped());
         return response()->json(['status'=>200]);
+
     }
 
     /**

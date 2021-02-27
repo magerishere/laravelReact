@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserMeta extends Model
+class Customer extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','charge','fname','lname','address','city','country','postalCode','about','image'];
+    protected $fillable = ['name','email','address'];
 }

@@ -2362,7 +2362,7 @@ var Register = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "registerSubmit", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(e) {
-        var data, res;
+        var data, res, response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2371,7 +2371,7 @@ var Register = /*#__PURE__*/function (_Component) {
                 data = _this.state;
 
                 if (!(data.password === data.confirm_password)) {
-                  _context.next = 10;
+                  _context.next = 13;
                   break;
                 }
 
@@ -2380,23 +2380,32 @@ var Register = /*#__PURE__*/function (_Component) {
 
               case 5:
                 res = _context.sent;
-                console.log(res);
 
-                if (res.data.status === 200) {
-                  console.log("dorost");
-
-                  _this.props.history.push("/login");
+                if (!(res.data.status === 200)) {
+                  _context.next = 11;
+                  break;
                 }
 
-                _context.next = 11;
+                _context.next = 9;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default().post("/user/login", _this.state);
+
+              case 9:
+                response = _context.sent;
+
+                if (response.data.status === 200) {
+                  _this.props.history.push("/");
+                }
+
+              case 11:
+                _context.next = 14;
                 break;
 
-              case 10:
+              case 13:
                 _this.setState({
                   message: "Confirm does not match!"
                 });
 
-              case 11:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -2579,6 +2588,30 @@ var Cart = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "checkMoney", function () {
+      _this.props.cartItems.reduce(function (a, c) {
+        return a + c.price * c.count;
+      }, 0 < _this.props.userMeta.charge ? _this.setState({
+        finishBuy: true
+      }) : _this.setState({
+        showCheckout: true
+      }));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "checkAddress", function () {
+      var address = _this.props.userMeta.address;
+
+      if (address) {
+        _this.setState({
+          finishBuy: true
+        });
+      } else {
+        _this.setState({
+          showAddress: true
+        });
+      }
+    });
+
     _this.state = {
       name: "",
       email: "",
@@ -2586,12 +2619,17 @@ var Cart = /*#__PURE__*/function (_Component) {
       showCheckout: false,
       finishBuy: false,
       total: 0,
-      discount: 0
+      showAddress: false
     };
     return _this;
   }
 
   _createClass(Cart, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      react_modal__WEBPACK_IMPORTED_MODULE_3___default().setAppElement("body");
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -2636,8 +2674,8 @@ var Cart = /*#__PURE__*/function (_Component) {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h3", {
                         "class": "text-dark mb-1",
                         children: "\u0641\u0631\u0648\u0634\u06AF\u0627\u0647 \u0627\u0644\u0647\u0647"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-                        children: " \u0627\u0633\u0644\u0627\u0645\u0634\u0647\u0631 \u062E\u06CC\u0627\u0628\u0627\u0646 \u0634\u06CC\u0631\u0627\u0632\u06CC"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                        children: [" ", "\u0627\u0633\u0644\u0627\u0645\u0634\u0647\u0631 \u062E\u06CC\u0627\u0628\u0627\u0646 \u0634\u06CC\u0631\u0627\u0632\u06CC"]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                         children: "\u0641\u0631\u0645\u0627\u0646\u062F\u0627\u0631\u06CC \u062F\u0627\u0646\u0634\u06AF\u0627\u0647 \u0627\u0633\u0644\u0627\u0645\u0634\u0647\u0631"
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
@@ -2645,7 +2683,7 @@ var Cart = /*#__PURE__*/function (_Component) {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                         children: "Phone: +91 9897 989 989"
                       })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                    }), this.props.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                       "class": "col-sm-6 ",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
                         "class": "mb-3",
@@ -2654,11 +2692,28 @@ var Cart = /*#__PURE__*/function (_Component) {
                         "class": "text-dark mb-1",
                         children: this.props.userMeta.fname
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                        children: [this.props.userMeta.country, " ", " ", " ", this.props.userMeta.city, " "]
+                        children: [this.props.userMeta.country, " ", this.props.userMeta.city, " "]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-                        children: this.props.userMeta.adress
+                        children: this.props.userMeta.address
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                        children: ["Email: ", this.props.user.email]
+                        children: ["Email:", " ", this.props.user.email]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: "Phone: +91 9895 398 009"
+                      })]
+                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      "class": "col-sm-6 ",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                        "class": "mb-3",
+                        children: "To:"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h3", {
+                        "class": "text-dark mb-1",
+                        children: this.state.name
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: "\u0627\u06CC\u0631\u0627\u0646"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: this.state.address
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                        children: ["Email:", " ", this.state.email]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                         children: "Phone: +91 9895 398 009"
                       })]
@@ -2692,7 +2747,7 @@ var Cart = /*#__PURE__*/function (_Component) {
                           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tr", {
                             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
                               "class": "center",
-                              children: cartItem._id
+                              children: cartItem.id
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
                               "class": "left strong",
                               children: cartItem.title
@@ -2709,7 +2764,7 @@ var Cart = /*#__PURE__*/function (_Component) {
                               "class": "right",
                               children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_1__.default)(cartItem.price * cartItem.count)
                             })]
-                          });
+                          }, cartItem.id);
                         })
                       })]
                     })
@@ -2775,7 +2830,7 @@ var Cart = /*#__PURE__*/function (_Component) {
                   "class": "card-footer bg-white",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
                     "class": "mb-0",
-                    children: "we will save your bill product in your account"
+                    children: this.props.auth ? "We will save your bill product in your account" : "We will send your bill product to your email"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
                     type: "submit",
                     value: "Finish",
@@ -2804,9 +2859,11 @@ var Cart = /*#__PURE__*/function (_Component) {
               children: [this.props.message !== "" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("strong", {
                   children: this.props.message
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                }), this.props.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                   href: "/dashboard",
                   children: "Check Here!"
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                  children: "we sent your bill product to your email"
                 })]
               }), this.props.message === "" && cartItems.map(function (item) {
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
@@ -2829,7 +2886,7 @@ var Cart = /*#__PURE__*/function (_Component) {
                       })]
                     })]
                   })]
-                }, item._id);
+                }, item.id);
               })]
             })
           })
@@ -2845,9 +2902,7 @@ var Cart = /*#__PURE__*/function (_Component) {
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
               onClick: function onClick() {
-                _this2.setState({
-                  showCheckout: true
-                });
+                _this2.checkMoney();
               },
               className: "button primary",
               children: "Procced"
@@ -2859,20 +2914,47 @@ var Cart = /*#__PURE__*/function (_Component) {
               className: "cart",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("form", {
                 onSubmit: this.createOrder,
-                children: this.props.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("ul", {
+                children: this.props.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("ul", {
                   className: "form-container",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-                      className: "button primary",
-                      type: "button",
-                      onClick: function onClick() {
-                        return _this2.setState({
-                          finishBuy: true
-                        });
-                      },
-                      children: "Checkout"
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                      children: "You have not enough money"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "row col-md-12",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                        className: "button primary col-md-6",
+                        type: "button",
+                        onClick: function onClick() {
+                          return _this2.checkAddress();
+                        },
+                        children: "Continue"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                        href: "/charge",
+                        className: "col-md-5",
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                          className: "button primary",
+                          type: "button",
+                          children: "Charge"
+                        })
+                      })]
+                    })]
+                  }), this.state.showAddress && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
+                    left: true,
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                        children: "Please first set your address"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                          href: "/profile",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                            className: "button primary",
+                            type: "button",
+                            children: "Set Address"
+                          })
+                        })
+                      })]
                     })
-                  })
+                  })]
                 }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("ul", {
                   className: "form-container",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
@@ -2905,7 +2987,12 @@ var Cart = /*#__PURE__*/function (_Component) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
                       className: "button primary",
-                      type: "submit",
+                      type: "button",
+                      onClick: function onClick() {
+                        return _this2.setState({
+                          finishBuy: true
+                        });
+                      },
                       children: "Checkout"
                     })
                   })]
@@ -2980,9 +3067,9 @@ var Filter = /*#__PURE__*/function (_Component) {
     value: function render() {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
         className: "filter",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
           className: "filter-result",
-          children: this.props.count
+          children: [" ", this.props.count, " Products"]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
           className: "filter-sort",
           children: [" ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("select", {
@@ -3136,7 +3223,7 @@ var Products = /*#__PURE__*/function (_Component) {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                   className: "product",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("a", {
-                    href: "#" + product._id,
+                    href: "#" + product.id,
                     onClick: function onClick() {
                       return _this2.openModal(product);
                     },
@@ -3159,7 +3246,7 @@ var Products = /*#__PURE__*/function (_Component) {
                     })]
                   })]
                 })
-              }, product._id);
+              }, product.id);
             })
           })
         }), product && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_modal__WEBPACK_IMPORTED_MODULE_3___default()), {
@@ -3191,7 +3278,7 @@ var Products = /*#__PURE__*/function (_Component) {
                         className: "button",
                         children: x
                       })]
-                    });
+                    }, x.length);
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                     className: "product-price",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
@@ -3326,12 +3413,12 @@ var Shop = /*#__PURE__*/function (_React$Component) {
 
       _this.setState({
         cartItems: cartItems.filter(function (x) {
-          return x._id !== product._id;
+          return x.id !== product.id;
         })
       });
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems.filter(function (x) {
-        return x._id !== product._id;
+        return x.id !== product.id;
       })));
     });
 
@@ -3340,7 +3427,7 @@ var Shop = /*#__PURE__*/function (_React$Component) {
 
       var alreadyInCart = false;
       cartItems.forEach(function (item) {
-        if (item._id === product._id) {
+        if (item.id === product.id) {
           item.count++;
           alreadyInCart = true;
         }
@@ -3364,7 +3451,7 @@ var Shop = /*#__PURE__*/function (_React$Component) {
       var sort = event.target.value;
 
       var products = _this.state.products.slice().sort(function (a, b) {
-        return sort === "lowest" ? a.price > b.price ? 1 : -1 : sort === "highest" ? a.price < b.price ? 1 : -1 : a._id > b._id ? 1 : -1;
+        return sort === "lowest" ? a.price > b.price ? 1 : -1 : sort === "highest" ? a.price < b.price ? 1 : -1 : a.id > b.id ? 1 : -1;
       });
 
       _this.setState({
@@ -3375,7 +3462,8 @@ var Shop = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "createOrder", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(orders) {
-        var total, size, res;
+        var total, size, res, _res;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -3383,22 +3471,21 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                 total = Math.round(orders.order.reduce(function (a, c) {
                   return a + c.price * c.count;
                 }, 0));
-                console.log(total);
                 size = _this.state.size;
 
                 if (!_this.state.auth) {
-                  _context.next = 10;
+                  _context.next = 9;
                   break;
                 }
 
-                _context.next = 6;
+                _context.next = 5;
                 return axios__WEBPACK_IMPORTED_MODULE_7___default().post("/product", {
                   products: orders.order,
                   size: size,
                   total: total
                 });
 
-              case 6:
+              case 5:
                 res = _context.sent;
 
                 if (res.data.status === 200) {
@@ -3411,13 +3498,30 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                   console.log("ghalat");
                 }
 
-                _context.next = 11;
+                _context.next = 13;
                 break;
 
-              case 10:
-                alert("need to save " + orders.name);
+              case 9:
+                _context.next = 11;
+                return axios__WEBPACK_IMPORTED_MODULE_7___default().post("/customer", {
+                  products: orders.order,
+                  name: orders.name,
+                  email: orders.email,
+                  address: orders.address
+                });
 
               case 11:
+                _res = _context.sent;
+
+                if (_res.data.status === 200) {
+                  _this.setState({
+                    message: "Your order successfuly submit!"
+                  });
+
+                  localStorage.clear();
+                }
+
+              case 13:
               case "end":
                 return _context.stop();
             }
@@ -3494,11 +3598,14 @@ var Shop = /*#__PURE__*/function (_React$Component) {
             children: "\u0641\u0631\u0648\u0634\u06AF\u0627\u0647 \u0627\u0644\u0647\u0647"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
             className: "toolbar",
-            children: this.state.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
+            children: this.state.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
+                href: "/charge",
+                children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_8__.default)(this.state.userMeta.charge)
+              }), " / ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
                 href: "/dashboard",
                 children: "Dashboard"
-              })
+              })]
             }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
                 to: "/login",
@@ -75433,7 +75540,7 @@ module.exports = warning;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"products":[{"_id":"dress1","image":"/images/dress1.jpg","title":"Midi sundress with shirring detail","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","L","XL","XXL"],"price":29.9},{"_id":"dress2","image":"/images/dress2.jpg","title":"Midi sundress with ruched front","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","M","L"],"price":18.9},{"_id":"dress3","image":"/images/dress3.jpg","title":"Midi dress in pink ditsy floral","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","M","L"],"price":14.9},{"_id":"dress4","image":"/images/dress4.jpg","title":"cami maxi dress in polka dot","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["XL"],"price":25.9},{"_id":"dress5","image":"/images/dress5.jpg","title":"Frill mini dress in yellow polka dot","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","L","XL"],"price":10.9},{"_id":"dress6","image":"/images/dress6.jpg","title":"Midi tea dress in blue and red spot","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["XL","XXL"],"price":49.9}]}');
+module.exports = JSON.parse('{"products":[{"id":"dress1","image":"/images/dress1.jpg","title":"Midi sundress with shirring detail","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","L","XL","XXL"],"price":29.9},{"id":"dress2","image":"/images/dress2.jpg","title":"Midi sundress with ruched front","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","M","L"],"price":18.9},{"id":"dress3","image":"/images/dress3.jpg","title":"Midi dress in pink ditsy floral","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","M","L"],"price":14.9},{"id":"dress4","image":"/images/dress4.jpg","title":"cami maxi dress in polka dot","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["XL"],"price":25.9},{"id":"dress5","image":"/images/dress5.jpg","title":"Frill mini dress in yellow polka dot","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["X","L","XL"],"price":10.9},{"id":"dress6","image":"/images/dress6.jpg","title":"Midi tea dress in blue and red spot","description":"This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.","availableSizes":["XL","XXL"],"price":49.9}]}');
 
 /***/ })
 

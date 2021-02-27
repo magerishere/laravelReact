@@ -6,7 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Models\User;
 use App\Models\UserMeta;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,11 +32,30 @@ Route::post('/user/setting',[UserController::class,'setting']);
 Route::post('/user/card',[UserController::class,'card']);
 Route::post('/user/charge',[UserController::class,'charge']);
 Route::post('/user/card/delete',[UserController::class,'cardDelete']);
-
+Route::resource('/customer',CustomerController::class);
 
 Route::get('/dashboard',function(){
     return view('dashboard');
 });
+Route::get('/charge',function(){
+    return view('dashboard');
+});
+Route::get('/setting',function(){
+    return view('dashboard');
+});
+Route::get('/profile',function(){
+    return view('dashboard');
+});
+Route::get('/register',function(){
+    return view('welcome');
+});
+Route::get('/login',function(){
+    return view('welcome');
+});
+
+
+
+
 
 
 Route::get('/tested',function(){

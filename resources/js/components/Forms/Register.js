@@ -23,11 +23,12 @@ export default class Register extends Component {
         const data = this.state;
         if (data.password === data.confirm_password) {
             const res = await axios.post("/user", data);
-            console.log(res);
 
             if (res.data.status === 200) {
-                console.log("dorost");
-                this.props.history.push("/login");
+                const response = await axios.post("/user/login", this.state);
+                if (response.data.status === 200) {
+                    this.props.history.push("/");
+                }
             }
         } else {
             this.setState({ message: "Confirm does not match!" });

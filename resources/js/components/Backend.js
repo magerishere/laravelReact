@@ -20,12 +20,11 @@ class Backend extends React.Component {
             userMeta: {},
             userCard: {},
             total: 0,
-            addClassActive: 1,
+            addClassActive: 0,
         };
     }
 
     async componentDidMount() {
-        console.log('didmount');
         const res = await axios.get("/user");
         if (res.data.status === 200) {
             const userId = res.data.user.id;
@@ -67,6 +66,24 @@ class Backend extends React.Component {
             console.log("Ghalat");
         }
     };
+
+    componentWillMount() {
+        const url = window.location.pathname;
+        let addClassActive;
+        if (url === "/dashboard") {
+            addClassActive = 1;
+        }
+        if (url === "/profile") {
+            addClassActive = 2;
+        }
+        if (url === "/setting") {
+            addClassActive = 3;
+        }
+        if (url === "/charge") {
+            addClassActive = 4;
+        }
+        this.setState({ addClassActive });
+    }
     render() {
         return (
             <Router>
@@ -288,15 +305,22 @@ class Backend extends React.Component {
                                                     aria-labelledby="navbarDropdownProfile"
                                                 >
                                                     <Link
-                                                    onClick={() => this.addClassActive(2)}
+                                                        onClick={() =>
+                                                            this.addClassActive(
+                                                                2
+                                                            )
+                                                        }
                                                         className="dropdown-item"
                                                         to="/profile"
                                                     >
                                                         Profile
                                                     </Link>
                                                     <Link
-                                                    onClick={() => this.addClassActive(3)}
-
+                                                        onClick={() =>
+                                                            this.addClassActive(
+                                                                3
+                                                            )
+                                                        }
                                                         className="dropdown-item"
                                                         to="/setting"
                                                     >
@@ -341,7 +365,9 @@ class Backend extends React.Component {
                                         <Setting />
                                     </Route>
                                     <Route path="/charge">
-                                        <Charge userCard={this.state.userCard} />
+                                        <Charge
+                                            userCard={this.state.userCard}
+                                        />
                                     </Route>
                                 </Switch>
                                 <footer className="footer">

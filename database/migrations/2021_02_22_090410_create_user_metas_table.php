@@ -19,7 +19,7 @@ class CreateUserMetasTable extends Migration
             $table->bigInteger('charge')->default(0);
             $table->string('fname',20)->nullable();
             $table->string('lname',30)->nullable();
-            $table->text('adress')->nullable();
+            $table->text('address')->nullable();
             $table->string('city',20)->nullable();
             $table->string('country',20)->nullable();
             $table->integer('postalCode')->nullable();

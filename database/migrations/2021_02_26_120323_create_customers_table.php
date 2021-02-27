@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserCardsTable extends Migration
+class CreateCustomersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateUserCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_cards', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('user_id');
-            $table->string('name')->nullable();
-            $table->bigInteger('number')->unique();
-            $table->integer('cvv2');
-            $table->tinyInteger('month');
-            $table->tinyInteger('year');
+            $table->string('name');
+            $table->string('email');
+            $table->text('address');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateUserCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_cards');
+        Schema::dropIfExists('customers');
     }
 }

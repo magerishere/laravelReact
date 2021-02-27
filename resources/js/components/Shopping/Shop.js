@@ -41,11 +41,11 @@ class Shop extends React.Component {
     removeFromCart = (product) => {
         const cartItems = this.state.cartItems.slice();
         this.setState({
-            cartItems: cartItems.filter((x) => x._id !== product._id),
+            cartItems: cartItems.filter((x) => x.id !== product.id),
         });
         localStorage.setItem(
             "cartItems",
-            JSON.stringify(cartItems.filter((x) => x._id !== product._id))
+            JSON.stringify(cartItems.filter((x) => x.id !== product.id))
         );
     };
 
@@ -53,7 +53,7 @@ class Shop extends React.Component {
         const cartItems = this.state.cartItems.slice();
         let alreadyInCart = false;
         cartItems.forEach((item) => {
-            if (item._id === product._id) {
+            if (item.id === product.id) {
                 item.count++;
                 alreadyInCart = true;
             }
@@ -92,7 +92,7 @@ class Shop extends React.Component {
                     ? a.price < b.price
                         ? 1
                         : -1
-                    : a._id > b._id
+                    : a.id > b.id
                     ? 1
                     : -1
             );
@@ -103,7 +103,7 @@ class Shop extends React.Component {
         let total = Math.round(
             orders.order.reduce((a, c) => a + c.price * c.count, 0)
         );
-        console.log(total);
+
         const size = this.state.size;
         if (this.state.auth) {
             const res = await axios.post("/product", {
@@ -121,7 +121,16 @@ class Shop extends React.Component {
                 console.log("ghalat");
             }
         } else {
-            alert("need to save " + orders.name);
+            const res = await axios.post("/customer", {
+                products: orders.order,
+                name: orders.name,
+                email: orders.email,
+                address: orders.address,
+            });
+            if (res.data.status === 200) {
+                this.setState({ message: "Your order successfuly submit!" });
+                localStorage.clear();
+            }
         }
     };
 
@@ -133,6 +142,10 @@ class Shop extends React.Component {
                     <div className="toolbar">
                         {this.state.auth ? (
                             <div>
+                                <a href="/charge">
+                                    {formatCurrency(this.state.userMeta.charge)}
+                                </a>
+                                {" / "}
                                 <a href="/dashboard">Dashboard</a>
                             </div>
                         ) : (

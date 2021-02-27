@@ -2109,7 +2109,7 @@ var Backend = /*#__PURE__*/function (_React$Component) {
       userMeta: {},
       userCard: {},
       total: 0,
-      addClassActive: 1
+      addClassActive: 0
     };
     return _this;
   }
@@ -2125,11 +2125,10 @@ var Backend = /*#__PURE__*/function (_React$Component) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log('didmount');
-                _context2.next = 3;
+                _context2.next = 2;
                 return axios.get("/user");
 
-              case 3:
+              case 2:
                 res = _context2.sent;
 
                 if (res.data.status === 200) {
@@ -2147,10 +2146,10 @@ var Backend = /*#__PURE__*/function (_React$Component) {
                   });
                 }
 
-                _context2.next = 7;
+                _context2.next = 6;
                 return axios.get("/product");
 
-              case 7:
+              case 6:
                 response = _context2.sent;
 
                 if (response.data.status === 200) {
@@ -2167,7 +2166,7 @@ var Backend = /*#__PURE__*/function (_React$Component) {
                   });
                 }
 
-              case 9:
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -2181,6 +2180,32 @@ var Backend = /*#__PURE__*/function (_React$Component) {
 
       return componentDidMount;
     }()
+  }, {
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      var url = window.location.pathname;
+      var addClassActive;
+
+      if (url === "/dashboard") {
+        addClassActive = 1;
+      }
+
+      if (url === "/profile") {
+        addClassActive = 2;
+      }
+
+      if (url === "/setting") {
+        addClassActive = 3;
+      }
+
+      if (url === "/charge") {
+        addClassActive = 4;
+      }
+
+      this.setState({
+        addClassActive: addClassActive
+      });
+    }
   }, {
     key: "render",
     value: function render() {
@@ -2706,17 +2731,17 @@ var Charge = /*#__PURE__*/function (_Component) {
               right: true,
               cascade: true,
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                className: "col-md-8",
+                className: "col-md-7",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                   className: "card",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-                    className: "card-header card-header-primary",
+                    className: "card-header card-header-primary row",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h4", {
-                      className: "card-title",
+                      className: "card-title col-md-8",
                       children: "Charge Account"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
                       type: "button",
-                      className: "btn btn-danger",
+                      className: "btn btn-danger col-md-3",
                       value: "back",
                       onClick: function onClick() {
                         return _this2.setState({
@@ -2957,12 +2982,15 @@ var Charge = /*#__PURE__*/function (_Component) {
                         children: this.props.userCard.map(function (card) {
                           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                             className: _this2.state.deleteList.indexOf(card.id) > -1 ? "bg-danger deleteSuccess" : "",
-                            onClick: function onClick() {
-                              return _this2.deleteListHandler(card.id);
-                            },
                             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                              onClick: function onClick() {
+                                return _this2.deleteListHandler(card.id);
+                              },
                               children: card.name ? card.name : "None"
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                              onClick: function onClick() {
+                                return _this2.deleteListHandler(card.id);
+                              },
                               children: card.number
                             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
@@ -2974,7 +3002,7 @@ var Charge = /*#__PURE__*/function (_Component) {
                                 value: "Use"
                               })
                             })]
-                          });
+                          }, card.id);
                         })
                       })]
                     })
@@ -3126,7 +3154,7 @@ var Dashboard = /*#__PURE__*/function (_Component) {
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                   className: "card-body table-responsive",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
+                  children: this.props.products.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
                     className: "table table-hover",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("thead", {
                       className: "text-primary",
@@ -3418,13 +3446,13 @@ var Profile = /*#__PURE__*/function (_Component) {
                         className: "form-group",
                         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
                           className: "bmd-label-floating",
-                          children: "Adress"
+                          children: "Address"
                         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
                           type: "text",
-                          name: "adress",
+                          name: "address",
                           className: "form-control",
                           onChange: this.handlerInput,
-                          value: this.state.user ? this.state.user.adress : ""
+                          value: this.state.user ? this.state.user.address : ""
                         })]
                       })
                     })

@@ -12,7 +12,6 @@ export default class Products extends Component {
         };
     }
 
-
     openModal = (product) => {
         this.setState({ product });
     };
@@ -26,10 +25,10 @@ export default class Products extends Component {
                 <Fade bottom cascade>
                     <ul className="products">
                         {this.props.products.map((product) => (
-                            <li key={product._id}>
+                            <li key={product.id}>
                                 <div className="product">
                                     <a
-                                        href={"#" + product._id}
+                                        href={"#" + product.id}
                                         onClick={() => this.openModal(product)}
                                     >
                                         <img
@@ -79,7 +78,7 @@ export default class Products extends Component {
                                     <p>
                                         AvailableSizes
                                         {product.availableSizes.map((x) => (
-                                            <span>
+                                            <span key={x.length}>
                                                 {" "}
                                                 <button className="button">
                                                     {x}
@@ -112,4 +111,3 @@ export default class Products extends Component {
         );
     }
 }
-

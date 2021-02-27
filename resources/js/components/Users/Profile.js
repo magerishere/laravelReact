@@ -138,17 +138,17 @@ export default class Profile extends Component {
                                         <div className="col-md-12">
                                             <div className="form-group">
                                                 <label className="bmd-label-floating">
-                                                    Adress
+                                                    Address
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="adress"
+                                                    name="address"
                                                     className="form-control"
                                                     onChange={this.handlerInput}
                                                     value={
                                                         this.state.user
                                                             ? this.state.user
-                                                                  .adress
+                                                                  .address
                                                             : ""
                                                     }
                                                 />

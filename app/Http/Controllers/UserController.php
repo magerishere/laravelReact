@@ -48,18 +48,16 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        // $this->validate($request,[
-        //     'password'=>'required|confirmed',
-        // ]);
+       
         $user = User::create([
             'email'=>$request->email,
             'password'=>bcrypt($request->password),
         ]);
-        // if($user){
-        //     return redirect('/');
-
-        // }
-       
+            
+            $userMeta = UserMeta::create([
+                'user_id'=>$user->id,
+    
+            ]);
             return response()->json(['status'=>200]);
     }
 
@@ -101,7 +99,7 @@ class UserController extends Controller
            $result = $user->update([
                 'fname'=>$request->fname,
                 'lname'=>$request->lname,
-                'adress'=>$request->adress,
+                'address'=>$request->address,
                 'city'=>$request->city,
                 'country'=>$request->country,
                 'postalCode'=>$request->postalCode,
@@ -113,7 +111,7 @@ class UserController extends Controller
                 'user_id'=>$id,
                 'fname'=>$request->fname,
                 'lname'=>$request->lname,
-                'adress'=>$request->adress,
+                'address'=>$request->address,
                 'city'=>$request->city,
                 'country'=>$request->country,
                 'postalCode'=>$request->postalCode,

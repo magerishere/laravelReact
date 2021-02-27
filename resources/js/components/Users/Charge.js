@@ -77,15 +77,15 @@ export default class Charge extends Component {
                     <div className="row">
                         {this.state.useCard ? (
                             <Fade right cascade>
-                                <div className="col-md-8">
+                                <div className="col-md-7">
                                     <div className="card">
-                                        <div className="card-header card-header-primary">
-                                            <h4 className="card-title">
+                                        <div className="card-header card-header-primary row">
+                                            <h4 className="card-title col-md-8">
                                                 Charge Account
                                             </h4>
                                             <input
                                                 type="button"
-                                                className="btn btn-danger"
+                                                className="btn btn-danger col-md-3"
                                                 value="back"
                                                 onClick={() =>
                                                     this.setState({
@@ -371,7 +371,7 @@ export default class Charge extends Component {
                                                 <tbody>
                                                     {this.props.userCard.map(
                                                         (card) => (
-                                                            <tr
+                                                            <tr key={card.id}
                                                                 className={
                                                                     this.state.deleteList.indexOf(
                                                                         card.id
@@ -379,18 +379,25 @@ export default class Charge extends Component {
                                                                         ? "bg-danger deleteSuccess"
                                                                         : ""
                                                                 }
-                                                                onClick={() =>
-                                                                    this.deleteListHandler(
-                                                                        card.id
-                                                                    )
-                                                                }
                                                             >
-                                                                <td>
+                                                                <td
+                                                                    onClick={() =>
+                                                                        this.deleteListHandler(
+                                                                            card.id
+                                                                        )
+                                                                    }
+                                                                >
                                                                     {card.name
                                                                         ? card.name
                                                                         : "None"}
                                                                 </td>
-                                                                <td>
+                                                                <td
+                                                                    onClick={() =>
+                                                                        this.deleteListHandler(
+                                                                            card.id
+                                                                        )
+                                                                    }
+                                                                >
                                                                     {
                                                                         card.number
                                                                     }

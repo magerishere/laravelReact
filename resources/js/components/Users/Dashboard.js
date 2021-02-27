@@ -63,7 +63,9 @@ export default class Dashboard extends Component {
                                         Products Status
                                     </h4>
                                 </div>
+
                                 <div className="card-body table-responsive">
+                            {this.props.products.length > 0 && 
                                     <table className="table table-hover">
                                         <thead className="text-primary">
                                             <th>ID</th>
@@ -105,6 +107,7 @@ export default class Dashboard extends Component {
                                             )}
                                         </tbody>
                                     </table>
+                            }
                                 </div>
                             </div>
                         </div>
