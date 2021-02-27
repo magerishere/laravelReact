@@ -3485,7 +3485,8 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                   products: orders.order,
                   size: size,
                   bill_id: orders.bill_id,
-                  total: total
+                  total: total,
+                  address: _this.state.userMeta.address
                 });
 
               case 5:
@@ -3510,6 +3511,7 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                   products: orders.order,
                   name: orders.name,
                   email: orders.email,
+                  bill_id: orders.bill_id,
                   address: orders.address
                 });
 

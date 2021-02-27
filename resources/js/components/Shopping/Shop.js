@@ -111,6 +111,7 @@ class Shop extends React.Component {
                 size: size,
                 bill_id: orders.bill_id,
                 total: total,
+                address: this.state.userMeta.address,
             });
 
             if (res.data.status === 200) {
@@ -126,6 +127,7 @@ class Shop extends React.Component {
                 products: orders.order,
                 name: orders.name,
                 email: orders.email,
+                bill_id: orders.bill_id,
                 address: orders.address,
             });
             if (res.data.status === 200) {
@@ -152,9 +154,7 @@ class Shop extends React.Component {
                         </a>
                     )}
 
-                    <a href="/">
-                        فروشگاه الهه
-                    </a>
+                    <a href="/">فروشگاه الهه</a>
                     <div className="toolbar">
                         {this.state.auth ? (
                             <div>

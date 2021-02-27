@@ -66,6 +66,7 @@ class ProductController extends Controller
             'bill_id'=>$request->bill_id,
             'user_id'=>$userId,
             'total'=>$request->total,
+            'address'=>$request->address,
         ]);
 
   

@@ -9,5 +9,5 @@ class Bill extends Model
 {
     use HasFactory;
 
-    protected $fillable =['bill_id','user_id','total'];
+    protected $fillable =['bill_id','user_id','total','address'];
 }

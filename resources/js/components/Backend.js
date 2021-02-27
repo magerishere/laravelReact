@@ -29,6 +29,7 @@ class Backend extends React.Component {
             const userId = res.data.user.id;
             const email = res.data.user.email;
             const charge = res.data.userMeta.charge;
+            
             const bills = res.data.bills;
             console.log(res.data.user);
             console.log(userId);

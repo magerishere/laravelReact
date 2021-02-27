@@ -3313,6 +3313,11 @@ var Dashboard = /*#__PURE__*/function (_Component) {
                                               })
                                             })
                                           })
+                                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("tr", {
+                                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                                            "class": "content-block",
+                                            children: this.state.bill.address
+                                          })
                                         })]
                                       })
                                     })

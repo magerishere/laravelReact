@@ -178,6 +178,16 @@ export default class Dashboard extends Component {
                                                                                             </table>
                                                                                         </td>
                                                                                     </tr>
+                                                                                    <tr>
+                                                                                        <td class="content-block">
+                                                                                            {
+                                                                                                this
+                                                                                                    .state
+                                                                                                    .bill
+                                                                                                    .address
+                                                                                            }
+                                                                                        </td>
+                                                                                    </tr>
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
@@ -238,16 +248,16 @@ export default class Dashboard extends Component {
                                                             </td>
                                                             <td>
                                                                 <a href="#">
-                                                                <button
-                                                                    className="btn btn-primary"
-                                                                    onClick={() =>
-                                                                        this.addBill(
-                                                                            bill
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    Bill
-                                                                </button>
+                                                                    <button
+                                                                        className="btn btn-primary"
+                                                                        onClick={() =>
+                                                                            this.addBill(
+                                                                                bill
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Bill
+                                                                    </button>
                                                                 </a>
                                                             </td>
                                                         </tr>

@@ -18,6 +18,7 @@ class CreateBillsTable extends Migration
             $table->string('bill_id');
             $table->integer('user_id');
             $table->bigInteger('total');
+            $table->text('address');
             $table->timestamps();
         });
     }

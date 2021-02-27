@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderShipped;
+use App\Models\Bill;
 
 class CustomerController extends Controller
 {
@@ -44,7 +45,7 @@ class CustomerController extends Controller
         $name = $request->name;
         $email = $request->email;
         $address = $request->address;
-        $userMeta = Customer::create([
+        $customer = Customer::create([
             'name'=>$name,
             'email'=>$email,
             'address'=>$address,
@@ -52,11 +53,19 @@ class CustomerController extends Controller
         for($i=0;$i < count($products);$i++)
         {
             $product = Product::create([
+                'bill_id'=>$request->bill_id,
+                'user_id'=>$customer->id,
                 'name'=>$products[$i]['title'],
                 'count'=>$products[$i]['count'],
                 'price'=>$products[$i]['price'],
             ]);
         }
+        $bill = Bill::create([
+            'bill_id'=>$request->bill_id,
+            'user_id'=>$customer->id,
+            'total'=>0,
+            'address'=>$address,
+        ]);
 
         // Mail::to('immagerishere@gmail.com')->send(new OrderShipped());
         return response()->json(['status'=>200]);
