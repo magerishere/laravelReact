@@ -34,8 +34,6 @@ export default class Profile extends Component {
         );
         if (res.data.status === 200) {
             this.setState({ message: "Successful Update" });
-        } else {
-            console.log("ghalat");
         }
     };
     handlerImage = (e) => {

@@ -14,8 +14,6 @@ export default class Login extends Component {
         };
     }
 
-
-
     handlerInput = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     };
@@ -35,7 +33,6 @@ export default class Login extends Component {
         const rememberMe = this.state.rememberMe;
         this.setState({ rememberMe: !rememberMe });
     };
- 
 
     render() {
         return (
@@ -45,10 +42,12 @@ export default class Login extends Component {
                         <div className="wrapper fadeInDown">
                             <div id="formContent">
                                 <div className="fadeIn first">
-                                    <img
-                                        src="/images/avatar.png"
-                                        alt="User Icon"
-                                    />
+                                    <a href="/">
+                                        <img
+                                            src="/images/avatar.png"
+                                            alt="User Icon"
+                                        />
+                                    </a>
                                 </div>
                                 <form onSubmit={this.loginSubmit}>
                                     {this.state.error && (
@@ -95,7 +94,6 @@ export default class Login extends Component {
                                 <a className="underlineHover" href="#">
                                     Forgot Password?
                                 </a>
-                           
 
                                 <div id="formFooter">
                                     <Link to="/register">Register?</Link>

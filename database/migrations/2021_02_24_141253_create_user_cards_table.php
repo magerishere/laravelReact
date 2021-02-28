@@ -17,7 +17,7 @@ class CreateUserCardsTable extends Migration
             $table->id();
             $table->tinyInteger('user_id');
             $table->string('name')->nullable();
-            $table->bigInteger('number')->unique();
+            $table->bigInteger('number');
             $table->integer('cvv2');
             $table->tinyInteger('month');
             $table->tinyInteger('year');

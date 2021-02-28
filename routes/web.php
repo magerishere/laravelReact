@@ -21,7 +21,37 @@ use App\Http\Controllers\CustomerController;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('main');
+
+Route::middleware('auth')->group(function () {
+  
+    
+Route::get('/dashboard',function(){
+    return view('dashboard');
+})->middleware('auth');
+Route::get('/charge',function(){
+    return view('dashboard');
 });
+Route::get('/setting',function(){
+    return view('dashboard');
+});
+Route::get('/profile',function(){
+    return view('dashboard');
+});
+
+
+});
+
+
+Route::get('/register',function(){
+    return view('welcome');
+});
+Route::get('/login',function(){
+    return view('welcome');
+});
+
+
+
 
 Route::resource('/user',UserController::class);
 Route::post('/user/login',[UserController::class,'login']);
@@ -33,42 +63,3 @@ Route::post('/user/card',[UserController::class,'card']);
 Route::post('/user/charge',[UserController::class,'charge']);
 Route::post('/user/card/delete',[UserController::class,'cardDelete']);
 Route::resource('/customer',CustomerController::class);
-
-Route::get('/dashboard',function(){
-    return view('dashboard');
-});
-Route::get('/charge',function(){
-    return view('dashboard');
-});
-Route::get('/setting',function(){
-    return view('dashboard');
-});
-Route::get('/profile',function(){
-    return view('dashboard');
-});
-Route::get('/register',function(){
-    return view('welcome');
-});
-Route::get('/login',function(){
-    return view('welcome');
-});
-
-
-
-
-
-
-Route::get('/tested',function(){
-    return view('tested');
-});
-
-Route::post('/tested',function(Request $request){
-    if($file = $request->file('image')) {
-        $name = time() . $file->getClientOriginalName();
-     
-        $file->move(public_path('/images/'),$name);
-        return $file->getClientOriginalExtension();
-     
-        // return response()->json(['status'=>200]);
-    }
-});

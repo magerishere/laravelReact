@@ -24,7 +24,7 @@ export default class Products extends Component {
             <div>
                 <Fade bottom cascade>
                     <ul className="products">
-                        {this.props.products.map((product) => (
+                        {this.props.products.length > 0 ? this.props.products.map((product) => (
                             <li key={product.id}>
                                 <div className="product">
                                     <a
@@ -52,7 +52,7 @@ export default class Products extends Component {
                                     </div>
                                 </div>
                             </li>
-                        ))}
+                        )) : <h4>No Products</h4>}
                     </ul>
                 </Fade>
                 {product && (

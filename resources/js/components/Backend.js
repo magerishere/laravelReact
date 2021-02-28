@@ -17,9 +17,9 @@ class Backend extends React.Component {
             userId: Number,
             email: "",
             charge: 0,
-            total: 0,
             addClassActive: 0,
-            bills: {},
+            bills: [],
+        
         };
     }
 
@@ -29,10 +29,9 @@ class Backend extends React.Component {
             const userId = res.data.user.id;
             const email = res.data.user.email;
             const charge = res.data.userMeta.charge;
-            
+
             const bills = res.data.bills;
-            console.log(res.data.user);
-            console.log(userId);
+          
             this.setState({
                 userId: userId,
 
@@ -50,9 +49,7 @@ class Backend extends React.Component {
         const res = await axios.post("/user/logout", "");
         if (res.data.status === 200) {
             window.location.replace("http://example.local/");
-        } else {
-            console.log("Ghalat");
-        }
+        } 
     };
 
     updateCharge = (charge) => {
@@ -76,6 +73,7 @@ class Backend extends React.Component {
         if (url === "/charge") {
             addClassActive = 4;
         }
+
         this.setState({ addClassActive });
     }
     render() {

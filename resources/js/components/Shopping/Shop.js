@@ -119,8 +119,6 @@ class Shop extends React.Component {
                     message: "Your order successfuly submit!",
                 });
                 localStorage.clear();
-            } else {
-                console.log("ghalat");
             }
         } else {
             const res = await axios.post("/customer", {
@@ -157,13 +155,21 @@ class Shop extends React.Component {
                     <a href="/">فروشگاه الهه</a>
                     <div className="toolbar">
                         {this.state.auth ? (
-                            <div>
-                                <a href="/charge">
-                                    {formatCurrency(this.state.userMeta.charge)}
-                                </a>
-                                {" / "}
-                                <a href="/dashboard">Dashboard</a>
-                            </div>
+                            this.state.user.role === 3 ? (
+                                <div>
+                                    <a href="/charge">
+                                        {formatCurrency(
+                                            this.state.userMeta.charge
+                                        )}
+                                    </a>
+                                    {" / "}
+                                    <a href="/dashboard">Dashboard</a>
+                                </div>
+                            ) : (
+                                <div>
+                                    <a href="/admin">Admin</a>
+                                </div>
+                            )
                         ) : (
                             <div>
                                 <Link to="/login">Login</Link>

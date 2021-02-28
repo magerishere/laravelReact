@@ -34,7 +34,12 @@ export default class Dashboard extends Component {
                                     </div>
                                     <p className="card-category">Total Cost</p>
                                     <h3 className="card-title">
-                                        {formatCurrency(this.props.total)}
+                                        {formatCurrency(
+                                            this.props.bills.reduce(
+                                                (a, c) => a + c.total,
+                                                0
+                                            )
+                                        )}
                                     </h3>
                                 </div>
                                 <div className="card-footer">

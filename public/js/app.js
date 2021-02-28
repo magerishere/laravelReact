@@ -2217,9 +2217,12 @@ var Login = /*#__PURE__*/function (_Component) {
                 id: "formContent",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                   className: "fadeIn first",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
-                    src: "/images/avatar.png",
-                    alt: "User Icon"
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                    href: "/",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
+                      src: "/images/avatar.png",
+                      alt: "User Icon"
+                    })
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
                   onSubmit: this.loginSubmit,
@@ -2360,6 +2363,57 @@ var Register = /*#__PURE__*/function (_Component) {
       _this.setState(_defineProperty({}, e.target.name, e.target.value));
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handlerInputPassword", function (e) {
+      var myInput = e.target.value;
+      var letter = document.getElementById("letter");
+      var capital = document.getElementById("capital");
+      var number = document.getElementById("number");
+      var length = document.getElementById("length");
+      var lowerCaseLetters = /[a-z]/g;
+
+      if (myInput.match(lowerCaseLetters)) {
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+      } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+      }
+
+      var upperCaseLetters = /[A-Z]/g;
+
+      if (myInput.match(upperCaseLetters)) {
+        capital.classList.remove("invalid");
+        capital.classList.add("valid");
+      } else {
+        capital.classList.remove("valid");
+        capital.classList.add("invalid");
+      } // Validate numbers
+
+
+      var numbers = /[0-9]/g;
+
+      if (myInput.match(numbers)) {
+        number.classList.remove("invalid");
+        number.classList.add("valid");
+      } else {
+        number.classList.remove("valid");
+        number.classList.add("invalid");
+      } // Validate length
+
+
+      if (myInput.length >= 8) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+      } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+      }
+
+      _this.setState({
+        password: myInput
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "registerSubmit", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(e) {
         var data, res, response;
@@ -2418,6 +2472,14 @@ var Register = /*#__PURE__*/function (_Component) {
       };
     }());
 
+    _defineProperty(_assertThisInitialized(_this), "onFocusPassword", function () {
+      document.getElementById("message").style.display = "block";
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onBlurPassword", function () {
+      document.getElementById("message").style.display = "none";
+    });
+
     _this.state = {
       email: "",
       password: "",
@@ -2442,9 +2504,12 @@ var Register = /*#__PURE__*/function (_Component) {
                 id: "formContent",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                   className: "fadeIn first",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
-                    src: "/images/avatar.png",
-                    alt: "User Icon"
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                    href: "/",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
+                      src: "/images/avatar.png",
+                      alt: "User Icon"
+                    })
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
                   onSubmit: this.registerSubmit,
@@ -2464,8 +2529,14 @@ var Register = /*#__PURE__*/function (_Component) {
                     type: "password",
                     className: "fadeIn third",
                     name: "password",
+                    id: "psw",
+                    onFocus: this.onFocusPassword,
+                    onBlur: this.onBlurPassword,
                     placeholder: "Password",
-                    onChange: this.handlerInput,
+                    onChange: this.handlerInputPassword,
+                    minLength: "8",
+                    pattern: "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
+                    title: "Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters",
                     required: true
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
                     type: "password",
@@ -2478,6 +2549,35 @@ var Register = /*#__PURE__*/function (_Component) {
                     type: "submit",
                     className: "fadeIn fourth",
                     value: "Register"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                    id: "message",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h3", {
+                      children: "Password must contain the following:"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+                      id: "letter",
+                      className: "invalid",
+                      children: ["A ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("b", {
+                        children: "lowercase"
+                      }), " letter"]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+                      id: "capital",
+                      className: "invalid",
+                      children: ["A ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("b", {
+                        children: "capital (uppercase)"
+                      }), " letter"]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+                      id: "number",
+                      className: "invalid",
+                      children: ["A ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("b", {
+                        children: "number"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+                      id: "length",
+                      className: "invalid",
+                      children: ["Minimum ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("b", {
+                        children: "8 characters"
+                      })]
+                    })]
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                   id: "formFooter",
@@ -2592,9 +2692,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "checkMoney", function () {
       _this.props.cartItems.reduce(function (a, c) {
         return a + c.price * c.count;
-      }, 0 < _this.props.userMeta.charge ? _this.setState({
-        finishBuy: true
-      }) : _this.setState({
+      }, 0 < _this.props.userMeta.charge ? _this.checkAddress() : _this.setState({
         showCheckout: true
       }));
     });
@@ -2609,6 +2707,20 @@ var Cart = /*#__PURE__*/function (_Component) {
       } else {
         _this.setState({
           showAddress: true
+        });
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "checkoutPress", function (e) {
+      e.preventDefault();
+      var name = _this.state.name;
+      var email = _this.state.email;
+      var validateEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      var address = _this.state.address;
+
+      if (name !== "" && validateEmail.test(String(email).toLowerCase()) && address !== "") {
+        _this.setState({
+          finishBuy: true
         });
       }
     });
@@ -2909,42 +3021,44 @@ var Cart = /*#__PURE__*/function (_Component) {
               className: "button primary",
               children: "Procced"
             })]
-          }), this.props.message === "" && this.state.showCheckout && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
-            right: true,
-            cascade: true,
+          }), this.props.message === "" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
+            bottom: true,
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "cart",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("form", {
-                onSubmit: this.createOrder,
+                onSubmit: this.checkoutPress,
                 children: this.props.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("ul", {
                   className: "form-container",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-                      children: "You have not enough money"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                      className: "row col-md-12",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-                        className: "button primary col-md-6",
-                        type: "button",
-                        onClick: function onClick() {
-                          return _this2.checkAddress();
-                        },
-                        children: "Continue"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                        href: "/charge",
-                        className: "col-md-5",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-                          className: "button primary",
-                          type: "button",
-                          children: "Charge"
-                        })
-                      })]
-                    })]
-                  }), this.state.showAddress && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
-                    left: true,
+                  children: [this.state.showCheckout && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
+                    right: true,
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-                        children: "Please first set your address"
+                        children: "You have not enough money"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                        className: "row col-md-12",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                          className: "button primary col-md-6",
+                          type: "button",
+                          onClick: function onClick() {
+                            return _this2.checkAddress();
+                          },
+                          children: "Continue"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                          href: "/charge",
+                          className: "col-md-5",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                            className: "button primary",
+                            type: "button",
+                            children: "Charge"
+                          })
+                        })]
+                      })]
+                    })
+                  }), this.state.showAddress && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_reveal_Fade__WEBPACK_IMPORTED_MODULE_2___default()), {
+                    right: true,
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                        children: "Please first set your address in your profile"
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
                           href: "/profile",
@@ -2987,15 +3101,21 @@ var Cart = /*#__PURE__*/function (_Component) {
                       required: true
                     })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                      type: "submit",
                       className: "button primary",
-                      type: "button",
-                      onClick: function onClick() {
-                        return _this2.setState({
-                          finishBuy: true
-                        });
-                      },
-                      children: "Checkout"
+                      value: "checkout"
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+                      children: ["Or You can sign up", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                        href: "/register",
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                          type: "button",
+                          className: "btn btn-primary",
+                          children: "Sign up"
+                        })
+                      })]
                     })
                   })]
                 })
@@ -3220,7 +3340,7 @@ var Products = /*#__PURE__*/function (_Component) {
           cascade: true,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("ul", {
             className: "products",
-            children: this.props.products.map(function (product) {
+            children: this.props.products.length > 0 ? this.props.products.map(function (product) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                   className: "product",
@@ -3249,6 +3369,8 @@ var Products = /*#__PURE__*/function (_Component) {
                   })]
                 })
               }, product.id);
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h4", {
+              children: "No Products"
             })
           })
         }), product && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)((react_modal__WEBPACK_IMPORTED_MODULE_3___default()), {
@@ -3498,8 +3620,6 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                   });
 
                   localStorage.clear();
-                } else {
-                  console.log("ghalat");
                 }
 
                 _context.next = 13;
@@ -3635,7 +3755,7 @@ var Shop = /*#__PURE__*/function (_React$Component) {
             children: "\u0641\u0631\u0648\u0634\u06AF\u0627\u0647 \u0627\u0644\u0647\u0647"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
             className: "toolbar",
-            children: this.state.auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+            children: this.state.auth ? this.state.user.role === 3 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
                 href: "/charge",
                 children: (0,_formatCurrency__WEBPACK_IMPORTED_MODULE_8__.default)(this.state.userMeta.charge)
@@ -3643,6 +3763,11 @@ var Shop = /*#__PURE__*/function (_React$Component) {
                 href: "/dashboard",
                 children: "Dashboard"
               })]
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("a", {
+                href: "/admin",
+                children: "Admin"
+              })
             }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
                 to: "/login",
@@ -8194,7 +8319,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* BASIC */\n\n/* html {\n    background-color: #56baed;\n} */\n\nbody {\n    font-family: \"Poppins\", sans-serif;\n    height: 100vh;\n}\n\na {\n    color: #92badd;\n    display: inline-block;\n    text-decoration: none;\n    font-weight: 400;\n}\n\nh2 {\n    text-align: center;\n    font-size: 16px;\n    font-weight: 600;\n    text-transform: uppercase;\n    display: inline-block;\n    margin: 40px 8px 10px 8px;\n    color: #cccccc;\n}\n\n/* STRUCTURE */\n\n.wrapper {\n    display: flex;\n    align-items: center;\n    flex-direction: column;\n    justify-content: center;\n    width: 100%;\n    min-height: 100%;\n    padding: 20px;\n    margin-top: 0;\n}\n\n.allForm {\n    display: inline-flex;\n}\n\n#formContent {\n    border-radius: 10px 10px 10px 10px;\n    background: #fff;\n    padding: 30px;\n    width: 90%;\n    max-width: 450px;\n    position: relative;\n    padding: 0px;\n    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);\n    text-align: center;\n}\n\n#formFooter {\n    background-color: #f6f6f6;\n    border-top: 1px solid #dce8f1;\n    padding: 25px;\n    text-align: center;\n    border-radius: 0 0 10px 10px;\n}\n\n/* TABS */\n\nh2.inactive {\n    color: #cccccc;\n}\n\nh2.active {\n    color: #0d0d0d;\n    border-bottom: 2px solid #5fbae9;\n}\n\n/* FORM TYPOGRAPHY*/\n\ninput[type=\"button\"],\ninput[type=\"submit\"],\ninput[type=\"reset\"] {\n    background-color: #56baed;\n    border: none;\n    color: white;\n    padding: 15px 80px;\n    text-align: center;\n    text-decoration: none;\n    display: inline-block;\n    text-transform: uppercase;\n    font-size: 13px;\n    box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);\n    border-radius: 5px 5px 5px 5px;\n    margin: 5px 20px 40px 20px;\n    transition: all 0.3s ease-in-out;\n}\n\ninput[type=\"button\"]:hover,\ninput[type=\"submit\"]:hover,\ninput[type=\"reset\"]:hover {\n    background-color: #39ace7;\n}\n\ninput[type=\"button\"]:active,\ninput[type=\"submit\"]:active,\ninput[type=\"reset\"]:active {\n    transform: scale(0.95);\n}\n\ninput {\n    background-color: #f6f6f6;\n    border: none;\n    color: #0d0d0d;\n    padding: 15px 32px;\n    text-align: center;\n    text-decoration: none;\n    display: inline-block;\n    font-size: 16px;\n    margin: 5px;\n    width: 85%;\n    border: 2px solid #f6f6f6;\n    transition: all 0.5s ease-in-out;\n    border-radius: 5px 5px 5px 5px;\n}\n\ninput:focus {\n    background-color: #fff;\n    border-bottom: 2px solid #5fbae9;\n}\n\ninput:placeholder {\n    color: #cccccc;\n}\n\n/* ANIMATIONS */\n\n/* Simple CSS3 Fade-in-down Animation */\n.fadeInDown {\n    -webkit-animation-name: fadeInDown;\n    animation-name: fadeInDown;\n    -webkit-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    animation-fill-mode: both;\n}\n\n@-webkit-keyframes fadeInDown {\n    0% {\n        opacity: 0;\n        transform: translate3d(0, -100%, 0);\n    }\n    100% {\n        opacity: 1;\n        transform: none;\n    }\n}\n\n@keyframes fadeInDown {\n    0% {\n        opacity: 0;\n        transform: translate3d(0, -100%, 0);\n    }\n    100% {\n        opacity: 1;\n        transform: none;\n    }\n}\n\n/* Simple CSS3 Fade-in Animation */\n@-webkit-keyframes fadeIn {\n    from {\n        opacity: 0;\n    }\n    to {\n        opacity: 1;\n    }\n}\n@keyframes fadeIn {\n    from {\n        opacity: 0;\n    }\n    to {\n        opacity: 1;\n    }\n}\n\n.fadeIn {\n    opacity: 0;\n    -webkit-animation: fadeIn ease-in 1;\n    animation: fadeIn ease-in 1;\n\n    -webkit-animation-fill-mode: forwards;\n    animation-fill-mode: forwards;\n\n    -webkit-animation-duration: 1s;\n    animation-duration: 1s;\n}\n\n.fadeIn.first {\n    -webkit-animation-delay: 0.4s;\n    animation-delay: 0.4s;\n}\n\n.fadeIn.second {\n    -webkit-animation-delay: 0.6s;\n    animation-delay: 0.6s;\n}\n\n.fadeIn.third {\n    -webkit-animation-delay: 0.8s;\n    animation-delay: 0.8s;\n}\n\n.fadeIn.fourth {\n    -webkit-animation-delay: 1s;\n    animation-delay: 1s;\n}\n\n/* Simple CSS3 Fade-in Animation */\n.underlineHover:after {\n    display: block;\n    left: 0;\n    bottom: -10px;\n    width: 0;\n    height: 2px;\n    background-color: #56baed;\n    content: \"\";\n    transition: width 0.2s;\n}\n\n.underlineHover:hover {\n    color: #0d0d0d;\n}\n\n.underlineHover:hover:after {\n    width: 100%;\n}\n\n/* OTHERS */\n\n*:focus {\n    outline: none;\n}\n\n#icon {\n    width: 60%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* BASIC */\n\n/* html {\n    background-color: #56baed;\n} */\n\nbody {\n    font-family: \"Poppins\", sans-serif;\n    height: 100vh;\n}\n\na {\n    color: #92badd;\n    display: inline-block;\n    text-decoration: none;\n    font-weight: 400;\n}\n\nh2 {\n    text-align: center;\n    font-size: 16px;\n    font-weight: 600;\n    text-transform: uppercase;\n    display: inline-block;\n    margin: 40px 8px 10px 8px;\n    color: #cccccc;\n}\n\n/* STRUCTURE */\n\n.wrapper {\n    display: flex;\n    align-items: center;\n    flex-direction: column;\n    justify-content: center;\n    width: 100%;\n    min-height: 100%;\n    padding: 20px;\n    margin-top: 0;\n}\n\n.allForm {\n    display: inline-flex;\n}\n\n#formContent {\n    border-radius: 10px 10px 10px 10px;\n    background: #fff;\n    padding: 30px;\n    width: 90%;\n    max-width: 450px;\n    position: relative;\n    padding: 0px;\n    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);\n    text-align: center;\n}\n\n#formFooter {\n    background-color: #f6f6f6;\n    border-top: 1px solid #dce8f1;\n    padding: 25px;\n    text-align: center;\n    border-radius: 0 0 10px 10px;\n}\n\n/* TABS */\n\nh2.inactive {\n    color: #cccccc;\n}\n\nh2.active {\n    color: #0d0d0d;\n    border-bottom: 2px solid #5fbae9;\n}\n\n/* FORM TYPOGRAPHY*/\n\ninput[type=\"button\"],\ninput[type=\"submit\"],\ninput[type=\"reset\"] {\n    background-color: #56baed;\n    border: none;\n    color: white;\n    padding: 15px 80px;\n    text-align: center;\n    text-decoration: none;\n    display: inline-block;\n    text-transform: uppercase;\n    font-size: 13px;\n    box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);\n    border-radius: 5px 5px 5px 5px;\n    margin: 5px 20px 40px 20px;\n    transition: all 0.3s ease-in-out;\n}\n\ninput[type=\"button\"]:hover,\ninput[type=\"submit\"]:hover,\ninput[type=\"reset\"]:hover {\n    background-color: #39ace7;\n}\n\ninput[type=\"button\"]:active,\ninput[type=\"submit\"]:active,\ninput[type=\"reset\"]:active {\n    transform: scale(0.95);\n}\n\ninput {\n    background-color: #f6f6f6;\n    border: none;\n    color: #0d0d0d;\n    padding: 15px 32px;\n    text-align: center;\n    text-decoration: none;\n    display: inline-block;\n    font-size: 16px;\n    margin: 5px;\n    width: 85%;\n    border: 2px solid #f6f6f6;\n    transition: all 0.5s ease-in-out;\n    border-radius: 5px 5px 5px 5px;\n}\n\ninput:focus {\n    background-color: #fff;\n    border-bottom: 2px solid #5fbae9;\n}\n\ninput:placeholder {\n    color: #cccccc;\n}\n\n/* ANIMATIONS */\n\n/* Simple CSS3 Fade-in-down Animation */\n.fadeInDown {\n    -webkit-animation-name: fadeInDown;\n    animation-name: fadeInDown;\n    -webkit-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    animation-fill-mode: both;\n}\n\n@-webkit-keyframes fadeInDown {\n    0% {\n        opacity: 0;\n        transform: translate3d(0, -100%, 0);\n    }\n    100% {\n        opacity: 1;\n        transform: none;\n    }\n}\n\n@keyframes fadeInDown {\n    0% {\n        opacity: 0;\n        transform: translate3d(0, -100%, 0);\n    }\n    100% {\n        opacity: 1;\n        transform: none;\n    }\n}\n\n/* Simple CSS3 Fade-in Animation */\n@-webkit-keyframes fadeIn {\n    from {\n        opacity: 0;\n    }\n    to {\n        opacity: 1;\n    }\n}\n@keyframes fadeIn {\n    from {\n        opacity: 0;\n    }\n    to {\n        opacity: 1;\n    }\n}\n\n.fadeIn {\n    opacity: 0;\n    -webkit-animation: fadeIn ease-in 1;\n    animation: fadeIn ease-in 1;\n\n    -webkit-animation-fill-mode: forwards;\n    animation-fill-mode: forwards;\n\n    -webkit-animation-duration: 1s;\n    animation-duration: 1s;\n}\n\n.fadeIn.first {\n    -webkit-animation-delay: 0.4s;\n    animation-delay: 0.4s;\n}\n\n.fadeIn.second {\n    -webkit-animation-delay: 0.6s;\n    animation-delay: 0.6s;\n}\n\n.fadeIn.third {\n    -webkit-animation-delay: 0.8s;\n    animation-delay: 0.8s;\n}\n\n.fadeIn.fourth {\n    -webkit-animation-delay: 1s;\n    animation-delay: 1s;\n}\n\n/* Simple CSS3 Fade-in Animation */\n.underlineHover:after {\n    display: block;\n    left: 0;\n    bottom: -10px;\n    width: 0;\n    height: 2px;\n    background-color: #56baed;\n    content: \"\";\n    transition: width 0.2s;\n}\n\n.underlineHover:hover {\n    color: #0d0d0d;\n}\n\n.underlineHover:hover:after {\n    width: 100%;\n}\n\n/* OTHERS */\n\n*:focus {\n    outline: none;\n}\n\n#icon {\n    width: 60%;\n}\n#message {\n    display:none;\n    background: #f1f1f1;\n    color: #000;\n    position: relative;\n    padding: 20px;\n    margin-top: 10px;\n  }\n  \n  #message p {\n    padding: 10px 35px;\n    font-size: 18px;\n  }\n  \n  /* Add a green text color and a checkmark when the requirements are right */\n  .valid {\n    color: green;\n  }\n  \n  .valid:before {\n    position: relative;\n    left: -35px;\n    content: \"✔\";\n  }\n  \n  /* Add a red text color and an \"x\" when the requirements are wrong */\n  .invalid {\n    color: red;\n  }\n  \n  .invalid:before {\n    position: relative;\n    left: -35px;\n    content: \"✖\";\n  }", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

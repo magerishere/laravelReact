@@ -43,7 +43,7 @@ export default class Cart extends Component {
         this.props.cartItems.reduce(
             (a, c) => a + c.price * c.count,
             0 < this.props.userMeta.charge
-                ? this.setState({ finishBuy: true })
+                ? this.checkAddress()
                 : this.setState({ showCheckout: true })
         );
     };
@@ -55,6 +55,22 @@ export default class Cart extends Component {
             this.setState({ finishBuy: true });
         } else {
             this.setState({ showAddress: true });
+        }
+    };
+
+    checkoutPress = (e) => {
+        e.preventDefault();
+        const name = this.state.name;
+        const email = this.state.email;
+        const validateEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        const address = this.state.address;
+        if (
+            name !== "" &&
+            validateEmail.test(String(email).toLowerCase()) &&
+            address !== ""
+        ) {
+            this.setState({ finishBuy: true });
         }
     };
 
@@ -420,115 +436,120 @@ export default class Cart extends Component {
                                 </button>
                             </div>
                         )}
-                        {this.props.message === "" && this.state.showCheckout && (
-                            <Fade right cascade>
-                                <div className="cart">
-                                    <form onSubmit={this.createOrder}>
-                                        {this.props.auth ? (
-                                            <ul className="form-container">
-                                                <li>
-                                                    <p>
-                                                        You have not enough
-                                                        money
-                                                    </p>
-                                                    <div className="row col-md-12">
-                                                        <button
-                                                            className="button primary col-md-6"
-                                                            type="button"
-                                                            onClick={() =>
-                                                                this.checkAddress()
-                                                            }
-                                                        >
-                                                            Continue
-                                                        </button>
-
-                                                        <a
-                                                            href="/charge"
-                                                            className="col-md-5"
-                                                        >
+                        {this.props.message === "" && (
+                            <Fade bottom>
+                            <div className="cart">
+                                <form onSubmit={this.checkoutPress}>
+                                    {this.props.auth ? (
+                                        <ul className="form-container">
+                                            {this.state.showCheckout && (
+                                                <Fade right>
+                                                    <li>
+                                                        <p>
+                                                            You have not enough
+                                                            money
+                                                        </p>
+                                                        <div className="row col-md-12">
                                                             <button
-                                                                className="button primary"
+                                                                className="button primary col-md-6"
                                                                 type="button"
+                                                                onClick={() =>
+                                                                    this.checkAddress()
+                                                                }
                                                             >
-                                                                Charge
+                                                                Continue
                                                             </button>
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                                {this.state.showAddress && (
-                                                    <Fade left>
-                                                        <li>
-                                                            <p>
-                                                                Please first set
-                                                                your address
-                                                            </p>
-                                                            <div>
-                                                                <a href="/profile">
-                                                                    <button
-                                                                        className="button primary"
-                                                                        type="button"
-                                                                    >
-                                                                        Set
-                                                                        Address
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </li>
-                                                    </Fade>
-                                                )}
-                                            </ul>
-                                        ) : (
-                                            <ul className="form-container">
-                                                <li>
-                                                    <label>Email</label>
-                                                    <input
-                                                        name="email"
-                                                        type="email"
-                                                        onChange={
-                                                            this.handlerInput
-                                                        }
-                                                        required
-                                                    />
-                                                </li>
-                                                <li>
-                                                    <label>Name</label>
-                                                    <input
-                                                        name="name"
-                                                        type="text"
-                                                        onChange={
-                                                            this.handlerInput
-                                                        }
-                                                        required
-                                                    />
-                                                </li>
-                                                <li>
-                                                    <label>Address</label>
-                                                    <input
-                                                        name="address"
-                                                        type="text"
-                                                        onChange={
-                                                            this.handlerInput
-                                                        }
-                                                        required
-                                                    />
-                                                </li>
-                                                <li>
-                                                    <button
-                                                        className="button primary"
-                                                        type="button"
-                                                        onClick={() =>
-                                                            this.setState({
-                                                                finishBuy: true,
-                                                            })
-                                                        }
-                                                    >
-                                                        Checkout
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        )}
-                                    </form>
-                                </div>
+
+                                                            <a
+                                                                href="/charge"
+                                                                className="col-md-5"
+                                                            >
+                                                                <button
+                                                                    className="button primary"
+                                                                    type="button"
+                                                                >
+                                                                    Charge
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </Fade>
+                                            )}
+                                            {this.state.showAddress && (
+                                                <Fade right>
+                                                    <li>
+                                                        <p>
+                                                            Please first set
+                                                            your address in your
+                                                            profile
+                                                        </p>
+                                                        <div>
+                                                            <a href="/profile">
+                                                                <button
+                                                                    className="button primary"
+                                                                    type="button"
+                                                                >
+                                                                    Set Address
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </Fade>
+                                            )}
+                                        </ul>
+                                    ) : (
+                                        <ul className="form-container">
+                                            <li>
+                                                <label>Email</label>
+                                                <input
+                                                    name="email"
+                                                    type="email"
+                                                    onChange={this.handlerInput}
+                                                    required
+                                                />
+                                            </li>
+                                            <li>
+                                                <label>Name</label>
+                                                <input
+                                                    name="name"
+                                                    type="text"
+                                                    onChange={this.handlerInput}
+                                                    required
+                                                />
+                                            </li>
+                                            <li>
+                                                <label>Address</label>
+                                                <input
+                                                    name="address"
+                                                    type="text"
+                                                    onChange={this.handlerInput}
+                                                    required
+                                                />
+                                            </li>
+                                            <li>
+                                                <input
+                                                    type="submit"
+                                                    className="button primary"
+                                                    value="checkout"
+                                                />
+                                            </li>
+                                            <li>
+                                                <p>
+                                                    Or You can sign up
+                                                    <a href="/register">
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary"
+                                                        >
+                                                            Sign up
+                                                        </button>
+                                                    </a>
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    )}
+                                </form>
+                            </div>
                             </Fade>
                         )}
                     </div>
